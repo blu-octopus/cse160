@@ -85,8 +85,8 @@ function  handleDrawOperationEvent() {
         var v3 = v1.sub(v2);
         drawVector(v3, "green");
     }
+    // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
     if (operation === "multiply"){
-        // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
         var v3 = v1.mul(scalar);
         var v4 = v2.mul(scalar);
         drawVector(v3, "green");
@@ -97,6 +97,16 @@ function  handleDrawOperationEvent() {
         var v4 = v2.div(scalar);
         drawVector(v3, "green");
         drawVector(v4, "green");
+    }
+    //calculate magnitude results and print into console
+    if (operation === "magnitude"){
+        console.log("Magnitude of v1: ", v1.magnitude());
+        console.log("Magnitude of v2: ", v2.magnitude());
+    }
+    //draw normalize v1 and v2
+    if (operation === "normalize"){
+        drawVector(v1.normalize(), "green");
+        drawVector(v2.normalize(), "green");
     }
 
 }
