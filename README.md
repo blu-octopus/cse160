@@ -9,6 +9,10 @@
 
     - Coded with extensive help from chat-GPT and co-pilot
 
+    Link here : [Assignment 0](https://blu-octopus.github.io/cse160/asgn0/asgn0)
+
+    ### File Structure
+
     - library
 
         - cuon-matrix-cse160.js : 
