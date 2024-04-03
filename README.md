@@ -4,14 +4,12 @@
  ## Assignment 0  
 
     Draw vectors on the canvas based on user input  of x and y coordinates.
-
     Perform basic arithmetic operations on vectors.
-
     Coded with extensive help from chat-GPT and co-pilot.
 
-    Link here : [Assignment 0](https://blu-octopus.github.io/cse160/asgn0/asgn0)
+    **Link here **: [Assignment 0](https://blu-octopus.github.io/cse160/asgn0/asgn0)
 
-    ### File Structure
+    ### File Structure 
 
     - library
 
