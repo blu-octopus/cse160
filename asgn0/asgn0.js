@@ -37,16 +37,68 @@ function handleDrawEvent() {
         return;
     }
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height); ``
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     var xInput = document.getElementById('v1-x-coordinate');
-    var yInput = document.getElementById('v1-y-coordinate');
+    var yInput = document.getElementById('v1-y-coordinate');    
+    var x2Input = document.getElementById('v2-x-coordinate');
+    var y2Input = document.getElementById('v2-y-coordinate');
 
     var x = parseFloat(xInput.value);
     var y = parseFloat(yInput.value);
+    var x2 = parseFloat(x2Input.value);
+    var y2 = parseFloat(y2Input.value);
 
     var v1 = new Vector3([x, y, 0]);
+    var v2 = new Vector3([x2, y2, 0]);
     drawVector(v1, "red");
+    drawVector(v2, "blue");
+}
+
+function  handleDrawOperationEvent() {
+    handleDrawEvent();
+    // Read the value of the selector and call the respective Vector3 function. 
+    var operation = document.getElementById('operation').value;
+
+    var scalarInput = document.getElementById('scalar'); 
+    var scalar = parseFloat(scalarInput.value);
+
+    var xInput = document.getElementById('v1-x-coordinate');
+    var yInput = document.getElementById('v1-y-coordinate');    
+    var x2Input = document.getElementById('v2-x-coordinate');
+    var y2Input = document.getElementById('v2-y-coordinate');
+
+    var x = parseFloat(xInput.value);
+    var y = parseFloat(yInput.value);
+    var x2 = parseFloat(x2Input.value);
+    var y2 = parseFloat(y2Input.value);
+
+    var v1 = new Vector3([x, y, 0]);
+    var v2 = new Vector3([x2, y2, 0]);
+    console.log(operation);
+    // For add and sub operations, draw a green vector v3 = v1 + v2  or v3 = v1 - v2. 
+    if (operation === "add"){
+        var v3 = v1.add(v2);
+        drawVector(v3, "green");
+    }
+    if (operation === "subtract"){
+        var v3 = v1.sub(v2);
+        drawVector(v3, "green");
+    }
+    if (operation === "multiply"){
+        // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
+        var v3 = v1.mul(scalar);
+        var v4 = v2.mul(scalar);
+        drawVector(v3, "green");
+        drawVector(v4, "green");
+    }
+    if (operation === "divide"){
+        var v3 = v1.div(scalar);
+        var v4 = v2.div(scalar);
+        drawVector(v3, "green");
+        drawVector(v4, "green");
+    }
+
 }
 
 function main() {
