@@ -116,7 +116,10 @@ class Vector3 {
         // Insert your code here.
         // This function should create and return a new vector.
         let v3 = new Vector3(); // Modify this line to calculate cross product between other1 and other2.
-
+        v3.elements[0] = other1.elements[1] * other2.elements[2] - other1.elements[2] * other2.elements[1];
+        v3.elements[1] = other1.elements[2] * other2.elements[0] - other1.elements[0] * other2.elements[2];
+        v3.elements[2] = other1.elements[0] * other2.elements[1] - other1.elements[1] * other2.elements[0];
+    
         // Don't delete the return statement.
         return v3;
     }
@@ -128,7 +131,7 @@ class Vector3 {
     magnitude() {
         // Insert your code here.
         let m = 0; // Modify this line to calculate this vector's magnitude.
-        m = Math.sqrt(this.elements[0] * this.elements[0] + this.elements[1] * this.elements[1]);
+        m = Math.sqrt(this.elements[0] * this.elements[0] + this.elements[1] * this.elements[1] + this.elements[2] * this.elements[2]);
         // Don't delete the return statement.
         return m;
     };

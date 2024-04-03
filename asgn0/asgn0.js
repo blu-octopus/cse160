@@ -111,6 +111,9 @@ function  handleDrawOperationEvent() {
     if (operation === "dot"){
         console.log("Angle: ", angleBetween(v1, v2));
     }
+    if (operation === "area"){
+        console.log("Area of triangle: ", areaTriangle(v1, v2));
+    }
 
 
 }
@@ -122,6 +125,14 @@ function angleBetween(v1, v2){
     var angleRad = Math.acos(dot/(mag1*mag2));
     var angleDeg = angleRad * (180 / Math.PI); // Convert radians to degrees
     return angleDeg;
+}
+
+function areaTriangle(v1, v2){
+    console.log(v1, v2 );
+    let cross = Vector3.cross(v1,v2);
+    console.log("cross is ",cross);
+    console.log("cross magnitude is ",cross.magnitude());
+    return cross.magnitude()/2;
 }
 
 function main() {
