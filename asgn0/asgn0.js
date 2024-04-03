@@ -30,6 +30,25 @@ function drawVector(v, color) {
     ctx.stroke();
 }
 
+function handleDrawEvent() {
+    var canvas = document.getElementById('example');
+    if (!canvas) {
+        console.log('Failed to retrieve the <canvas> element');
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); ``
+
+    var xInput = document.getElementById('v1-x-coordinate');
+    var yInput = document.getElementById('v1-y-coordinate');
+
+    var x = parseFloat(xInput.value);
+    var y = parseFloat(yInput.value);
+
+    var v1 = new Vector3([x, y, 0]);
+    drawVector(v1, "red");
+}
+
 function main() {
     // Retrieve <canvas> element <- (1)
     var canvas = document.getElementById('example');
@@ -45,8 +64,8 @@ function main() {
     // ctx.fillStyle = 'rgba(0, 0, 255, 1.0)'; // Set a blue color
     // ctx.fillRect(120, 10, 150, 150); // Fill a rectangle with the color
 
-    var v1 = new Vector3([2.25, 2.25, 0]);
-    drawVector(v1, "red");
+    // var v1 = new Vector3([2.25, 2.25, 0]);
+    // drawVector(v1, "red");
 
 }
 
