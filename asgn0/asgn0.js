@@ -19,7 +19,7 @@ function drawVector(v, color) {
     ctx.moveTo(width, height); // Center of the canvas (400/2, 400/2)
 
     // Scale the vector coordinates by 20 for visualization
-    console.log(v.elements[0], v.elements[1]);
+    // console.log(v.elements[0], v.elements[1]);
     var scaledX = 200 + v.elements[0]* 20; // Scale x coordinate and add to center
     var scaledY = 200 - v.elements[1] * 20; // Scale y coordinate and subtract from center
 
@@ -130,8 +130,8 @@ function angleBetween(v1, v2){
 function areaTriangle(v1, v2){
     console.log(v1, v2 );
     let cross = Vector3.cross(v1,v2);
-    console.log("cross is ",cross);
-    console.log("cross magnitude is ",cross.magnitude());
+    // console.log("cross is ",cross);
+    // console.log("cross magnitude is ",cross.magnitude());
     return cross.magnitude()/2;
 }
 

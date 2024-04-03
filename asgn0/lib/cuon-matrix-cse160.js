@@ -102,9 +102,10 @@ class Vector3 {
     static dot(other1, other2) {
         // Insert your code here.
         let d = 0; // Modify this line to calculate this vector's magnitude.
-        d = other1.elements[0] * other2.elements[0] + other1.elements[1] * other2.elements[1];
+        d = other1.elements[0] * other2.elements[0] + other1.elements[1] * other2.elements[1] + other1.elements[2] * other2.elements[2];
         // ||v1|| * ||v2|| * cos(alpha).
         // Don't delete the return statement.
+        // console.log(d);
         return d;
     }
 
