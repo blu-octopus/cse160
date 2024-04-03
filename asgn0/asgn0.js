@@ -108,7 +108,20 @@ function  handleDrawOperationEvent() {
         drawVector(v1.normalize(), "green");
         drawVector(v2.normalize(), "green");
     }
+    if (operation === "dot"){
+        console.log("Angle: ", angleBetween(v1, v2));
+    }
 
+
+}
+
+function angleBetween(v1, v2){
+    var dot = Vector3.dot(v1,v2);
+    var mag1 = v1.magnitude();
+    var mag2 = v2.magnitude();
+    var angleRad = Math.acos(dot/(mag1*mag2));
+    var angleDeg = angleRad * (180 / Math.PI); // Convert radians to degrees
+    return angleDeg;
 }
 
 function main() {
