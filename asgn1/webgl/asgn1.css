@@ -30,14 +30,19 @@ h1 {
     color: #ff8108;
     text-align: center;
 }
+p {
+    font-family: sans-serif;
+}
+
 .container {
-    width: 100%;
-    height: 100vh; /* Use viewport height for full-screen height */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center; /* Center align all text inside the container */
+    display: flex; /* Set container to use flexbox */
+}
+
+.item {
+    margin: 10px; /* Add some margin for spacing */
+    padding: 20px; /* Add padding for content */
+    background-color: #f0f0f0; /* Add background color for clarity */
+    border: 1px solid #ccc; /* Add border for clarity */
 }
 
 .slider-container {
@@ -57,7 +62,7 @@ h1 {
 
 .button-23 {
   background-color: #f4cf47;
-  border: 1px solid #222222;
+  border: 2px solid #222222;
   border-radius: 8px;
   box-sizing: border-box;
   color: #222222;
@@ -81,10 +86,14 @@ h1 {
 }
 
 .button-23:active {
-  background-color: #f4e19c;
-  border-color: #000000;
-  transform: scale(.96);
+  background-color: #ffffff;
 }
+
+.button-23:hover {
+    background-color: #f4e19c;
+    border-color: #000000;
+    transform: scale(.96);
+  }
 
 .button-23:disabled {
   border-color: #f4e19c;
