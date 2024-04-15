@@ -27,7 +27,8 @@ function setupWebGL() {
   canvas = document.getElementById('webgl');
 
   // Get the rendering context for WebGL
-  gl = getWebGLContext(canvas);
+//   gl = getWebGLContext(canvas);
+    gl = canvas.getContext("webgl", {preserveDrawingBuffer: true});
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
@@ -66,13 +67,17 @@ function connectVariablesToGLSL() {
 //global related UI
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0]; // The color selected from the color dialog box
 let g_selectedSize = 10; // The size of the point
+let g_selectedType = "point"; // The type of the shape   
 
 function addActionsForHtmlUI() {
-    //buttons
-    document.getElementById('red').onclick = function() { g_selectedColor = [1.0, 0.0, 0.0, 1.0]; };
-    document.getElementById('green').onclick = function() { g_selectedColor = [0.0, 1.0, 0.0, 1.0]; };
+
     //clear button
     document.getElementById('clear').onclick = function() { g_shapesList = []; renderAllShapes();};
+
+    //type button
+    document.getElementById('triButton').onclick = function() {g_selectedType = "triangle";};
+    document.getElementById('pointButton').onclick = function() { g_selectedType = "point";};
+    document.getElementById('circleButton').onclick = function() { g_selectedType = "circle";};
 
     //sliders
     // document.getElementById('redSlide').addEventListener = ('mouseup', function() { g_selectedColor[0] = this.value/100; });
@@ -108,6 +113,7 @@ function main() {
 
   // Register function (event handler) to be called on a mouse press
   canvas.onmousedown =  click;
+  canvas.onmousemove = function(ev){ if(ev.buttons == 1) {click(ev)} };
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -126,7 +132,14 @@ function click(ev) {
     let [x,y] = convertCoordinatesEventToGL(ev);
 
   // Store the coordinates to g_points array
-    let point = new Point();
+    let point;
+    if (g_selectedType == "triangle") {
+        point = new Triangle();
+    } else if (g_selectedType == "circle") {
+        point = new Circle();
+    }else {
+        point = new Point();
+    }
     point.position = [x, y];
     point.color = g_selectedColor.slice();
     point.size = g_selectedSize;
