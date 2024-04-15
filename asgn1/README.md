@@ -31,4 +31,4 @@ To run the program, open the `asgn1.html` file in a web browser. The program wil
 - Event listeners that quacks when mouse is lifted
 - Pretty buttons
 - There's a frame
-- 
+- It's giving ducks
