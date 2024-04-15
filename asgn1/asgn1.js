@@ -129,6 +129,15 @@ function addActionsForHtmlUI() {
         segmentValue.textContent = segmentSlider.value; // Update value as slider changes
         g_selectedSegments = parseInt(segmentSlider.value);
     });
+
+    // Add event listener to the mouseup event on the document
+    document.addEventListener('mouseup', function(event) {
+        // Check if the mouse button was clicked (event.button === 0 means left mouse button)
+        if (event.button === 0) {
+            // Call the playQuack function to play the quack sound
+            playQuack();
+        }
+    });
 }
 
 function main() {
@@ -322,6 +331,9 @@ function drawDucky(){
         let pt2 = [centerPt[0] + vec2[0], centerPt[1] + vec2[1]];
         drawTriangle( [centerPt[0],centerPt[1],pt1[0],pt1[1],pt2[0],pt2[1]] );
     }
+}
 
-
+function playQuack() {
+  var audio = new Audio('./src/quack.mp3');
+  audio.play();
 }
