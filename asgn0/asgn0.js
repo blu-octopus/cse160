@@ -20,8 +20,8 @@ function drawVector(v, color) {
 
     // Scale the vector coordinates by 20 for visualization
     // console.log(v.elements[0], v.elements[1]);
-    var scaledX = 200 + v.elements[0]* 20; // Scale x coordinate and add to center
-    var scaledY = 200 - v.elements[1] * 20; // Scale y coordinate and subtract from center
+    var scaledX = width + v.elements[0]* 20; // Scale x coordinate and add to center
+    var scaledY = height - v.elements[1] * 20; // Scale y coordinate and subtract from center
 
     // Draw a line to the scaled endpoint
     ctx.lineTo(scaledX, scaledY);
