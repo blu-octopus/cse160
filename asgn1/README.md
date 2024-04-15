@@ -23,4 +23,12 @@ To run the program, open the `asgn1.html` file in a web browser. The program wil
 
 - The base code are from link below: Ch2 and Ch3 of [WebGL Programming Guide. Matsuda & Lea](https://sites.google.com/site/webglbook/home), with help from the Youtube Playlist by James Davis
 - Used ChatGPT and CoPilot to help with the code
-- Used [this](https://codepen.io/ash_creator/pen/zYaZXLJ) for button css
+- Used [this css button example](https://codepen.io/ash_creator/pen/zYaZXLJ) for button css
+
+## Awesomeness
+
+- DUCKs are awesome
+- Event listeners that quacks when mouse is lifted
+- Pretty buttons
+- There's a frame
+- 
