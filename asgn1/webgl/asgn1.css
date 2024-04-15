@@ -28,24 +28,71 @@ body {
   }
 h1 {
     color: #ff8108;
+    text-align: center;
 }
 .container {
-text-align: center; /* Center align all text and elements */
+    width: 100%;
+    height: 100vh; /* Use viewport height for full-screen height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Center align all text inside the container */
 }
 
 .slider-container {
-display: inline-block; /* Ensure sliders are displayed inline */
-text-align: left; /* Left align text within slider container */
-margin-top: 10px; /* Add space between sliders */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #webgl-container {
-text-align: center;
+    text-align: center;
 }
 
 #webgl {
-display: inline-block;
+    display: inline-block;
+    margin: 0 auto;
 }
+
+.button-23 {
+  background-color: #f4cf47;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0;
+  outline: none;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+}
+
+.button-23:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.button-23:active {
+  background-color: #f4e19c;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+.button-23:disabled {
+  border-color: #f4e19c;
+  color: #f4e19c;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .button--piyo{
     --main_color : #f4cf47 ;
     --sub_color1 : #f4e19c ;

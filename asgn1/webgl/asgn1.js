@@ -101,6 +101,15 @@ function addActionsForHtmlUI() {
     s.addEventListener('change', () => {
         g_selectedSize = s.value;
     });
+
+    //segment slider
+    const segmentSlider = document.getElementById('segmentSlide');
+    const segmentValue = document.getElementById('segmentValue');
+    segmentValue.textContent = segmentSlider.value; // Set initial value
+    segmentSlider.addEventListener('input', function() {
+        segmentValue.textContent = segmentSlider.value; // Update value as slider changes
+        g_selectedSegments = parseInt(segmentSlider.value);
+    });
 }
 
 function main() {
@@ -137,6 +146,8 @@ function click(ev) {
         point = new Triangle();
     } else if (g_selectedType == "circle") {
         point = new Circle();
+        point.segments = document.getElementById("segmentSlide").value;
+        changeSegmentValue();
     }else {
         point = new Point();
     }
@@ -146,6 +157,13 @@ function click(ev) {
     g_shapesList.push(point);
 
     renderAllShapes();
+}
+
+function changeSegmentValue(){
+    const segmentValue = document.getElementById('segmentValue');
+    const segmentSlider = document.getElementById('segmentSlide');
+    segmentValue.textContent = segmentSlider.value; // Update value as slider changes
+    g_selectedSegments = parseInt(segmentSlider.value);
 }
 
 function convertCoordinatesEventToGL(ev){

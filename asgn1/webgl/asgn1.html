@@ -11,28 +11,25 @@
 
   <body onload="main()">
     <h1>Assignment 1: Painting Program</h1>
-    <br>
+    
     <div id="webgl-container">
         <canvas id="webgl" width="400" height="400">
         Please use a browser that supports "canvas"
         </canvas>
     </div>
-    <!-- clear -->
-    <!-- <br>
-    <button type = "button" id="clear">Clear Canvas</button> -->
 
     <!-- button type -->
     <div>
         Drawing Mode:
         <br>
-        <button type = "button" id="pointButton">Point</button>
-        <button type = "button" id="triButton">Triangle</button>
-        <button type = "button" id="circleButton">Circle</button>
+        <button type = "button" id="pointButton" class="button-23">⬛ Point</button>
+        <button type = "button" id="triButton" class="button-23">▲ Triangle</button>
+        <button type = "button" id="circleButton" class="button-23">⚫ Circle</button>
     </div>
 
     <!-- slider -->
     <div>
-        <br><br>
+        <br>
         Shape Color:
         <br>
         Red <input type="range" min="0" max="100" value="100" class="slider" id="redSlide" />
@@ -42,7 +39,8 @@
         <!-- size -->
         <br>
         Shape Size: <input type="range" min="1" max="100" value="10" class="slider" id="sizeSlide" />
-        (Circle) Segment Count: <input type="range" min="1" max="100" value="10" class="slider" id="segmentSlide" />
+        (Circle) Segment Count: <input type="range" min="3" max="20" value="10" class="slider" id="segmentSlide" />
+        <span id="segmentValue">10</span> 
     </div>
 
     <!-- clear button -->
