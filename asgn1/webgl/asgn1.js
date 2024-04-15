@@ -71,6 +71,8 @@ function addActionsForHtmlUI() {
     //buttons
     document.getElementById('red').onclick = function() { g_selectedColor = [1.0, 0.0, 0.0, 1.0]; };
     document.getElementById('green').onclick = function() { g_selectedColor = [0.0, 1.0, 0.0, 1.0]; };
+    //clear button
+    document.getElementById('clear').onclick = function() { g_shapesList = []; renderAllShapes();};
 
     //sliders
     // document.getElementById('redSlide').addEventListener = ('mouseup', function() { g_selectedColor[0] = this.value/100; });
