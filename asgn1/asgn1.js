@@ -75,9 +75,9 @@ function addActionsForHtmlUI() {
     //clear button
     document.getElementById('clear').onclick = function() { 
         g_shapesList = []; 
-        ducked = false; 
         gl.clearColor(0, 0, 0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT); 
+        ducked = false; 
         renderAllShapes();}
     ;
 
@@ -85,8 +85,15 @@ function addActionsForHtmlUI() {
     document.getElementById('triButton').onclick = function() {g_selectedType = "triangle";};
     document.getElementById('pointButton').onclick = function() { g_selectedType = "point";};
     document.getElementById('circleButton').onclick = function() { g_selectedType = "circle";};
-    document.getElementById('duckyButton').onclick = function() { ducked = true; console.log("ducky mode activated!"); drawDucky();};
-    
+    document.getElementById('duckyButton').onclick = function() { 
+        ducked = true; 
+        console.log("ducky mode activated!");
+        g_shapesList = [];  
+        gl.clearColor(0, 0, 0, 1.0);        
+        gl.clear(gl.COLOR_BUFFER_BIT); 
+        renderAllShapes()
+        drawDucky();
+    };
 
     //sliders
     // document.getElementById('redSlide').addEventListener = ('mouseup', function() { g_selectedColor[0] = this.value/100; });
