@@ -9,18 +9,16 @@ Coded with extensive help from chat-GPT and co-pilot.
 
 **Link here**: [Assignment 0](https://blu-octopus.github.io/cse160/asgn0/asgn0)
 
-### File Structure 
+## Assignment 1  
 
-- library
+Drawing tools on the canvas. Duck themed. 
+Coded with extensive help from chat-GPT and co-pilot.
 
-    - cuon-matrix-cse160.js : 
-    matrix library. implemented add, sub, mult, div, among other functions
+**Link here**: [Assignment 1](https://blu-octopus.github.io/cse160/asgn1/asgn1)
 
-    - vectorTests.html : 
-    given test file for cuon-matrix-cse160.js
 
-- asgn0.html : 
-html page drawing canvas with input, labels, and buttons. Importing cuon-matrix-cse160.js and asgn0.js 
+## Assignment 5 part a
 
-- asgn0.js : 
-javascript file that draws a line on the canvas based on user input
+Rendering three.js scene with a rotating cube and a rotating sphere.
+
+**Link here**: [Assignment 5 part a](https://blu-octopus.github.io/cse160/asgn5/asgn5)
