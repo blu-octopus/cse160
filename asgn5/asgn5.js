@@ -42,14 +42,16 @@ function main() {
     scene.add(light);
 
     // Load the skybox texture
-    const loader2 = new THREE.TextureLoader();
-    const skyboxTexture = loader2.load(
-      './assets/skybox/nightsky.jpeg',
-      () => {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        texture.colorSpace = THREE.SRGBColorSpace;
-        scene.background = texture;
-      });
+    const loader2 = new THREE.CubeTextureLoader();
+    const skyboxTexture = loader2.load([
+        './assets/skybox/nx.png',
+        './assets/skybox/ny.png',
+        './assets/skybox/nz.png',
+        './assets/skybox/px.png',
+        './assets/skybox/py.png',
+        './assets/skybox/pz.png'
+    ]);
+    
     // Create a cube geometry with a large size to encompass the entire scene
     const skyboxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
     const skyboxMaterial = new THREE.MeshBasicMaterial({ map: skyboxTexture, side: THREE.BackSide });
