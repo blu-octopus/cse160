@@ -30,25 +30,69 @@ function main() {
 
     loader.load("./assets/samurai-capy/scene.gltf", function (gltf) {
         const model = gltf.scene;
+        model.position.set(0, 0, 0);
         scene.add(model);
+        scene.traverse((obj) => {
+            if (obj.castShadow !== undefined) {
+              obj.castShadow = true;
+              obj.receiveShadow = true;
+            }
+          });
+
+    });
+    
+    loader.load("./assets/water/scene.gltf", function (waterGltf) {
+        const waterModel = waterGltf.scene;
+        waterModel.position.set(0, 50, 200);
+        scene.add(waterModel);
+    });
+
+    loader.load("./assets/bridge/scene.gltf", function (bridgeGltf) {
+        const bridgeModel = bridgeGltf.scene;
+        bridgeModel.position.set(0, -5.8, 0);
+
+        const scaleFactor = 2.5; // Adjust this value to make the bridge bigger as needed
+        bridgeModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+        // for (const material of Object.values(bridgeGltf.materials)) {
+        //     material.side = THREE.DoubleSide;
+        // }
+        // loader.setMaterials(bridgeGltf);
+        // bridgeModel.material.color.setHex(0x000000);
+        // add in color
+
+        scene.add(bridgeModel);
     });
 
 
     // Lights Setup
     const color = 0xFFFFFF;
-    const intensity = 3;
+    const intensity = 1;
     const light = new THREE.DirectionalLight(color, intensity);
+    light.castShadow = true;
+    light.position.set(-250, 800, -850);
+    light.target.position.set(-550, 40, -450);
+    light.shadow.bias = -0.004;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+
     light.position.set(-1, 2, 4);
+
     scene.add(light);
+    const cam = light.shadow.camera;
+    cam.near = 1;
+    cam.far = 2000;
+    cam.left = -1500;
+    cam.right = 1500;
+    cam.top = 1500;
+    cam.bottom = -1500;
 
     const loader2 = new THREE.CubeTextureLoader();
     const texture = loader2.load([
         './assets/skybox/px.png',
         './assets/skybox/nx.png',
-
         './assets/skybox/py.png',
         './assets/skybox/ny.png',
-
         './assets/skybox/pz.png',
         './assets/skybox/nz.png',
     ]);
