@@ -130,7 +130,7 @@ function main() {
     const spotIntensity = 999;
     const spotColor = 0xFFBB88; 
     const spotLight = new THREE.SpotLight(spotColor, spotIntensity);
-    spotLight.position.set(20, 0, 0);
+    spotLight.position.set(40, 20, 0);
     spotLight.target.position.set(0, 0, 0);
     //rotate light
     spotLight.rotation.set(180, 200, 200);
@@ -139,13 +139,13 @@ function main() {
     spotLight.angle = Math.PI / 8;
     spotLight.distance = 40;
     ///make light cast shadow
-    spotLight.castShadow = true;
-    spotLight.shadow.bias = -0.0001;
-    spotLight.shadow.mapSize.width = 2048;
-    spotLight.shadow.mapSize.height = 2048;
-    spotLight.shadow.camera.near = 0.5;
-    spotLight.shadow.camera.far = 500;
-    spotLight.shadow.camera.fov = 30;
+    // spotLight.castShadow = true;
+    // spotLight.shadow.bias = -0.0001;
+    // spotLight.shadow.mapSize.width = 2048;
+    // spotLight.shadow.mapSize.height = 2048;
+    // spotLight.shadow.camera.near = 0.5;
+    // spotLight.shadow.camera.far = 500;
+    // spotLight.shadow.camera.fov = 30;
 
     scene.add(spotLight);
     scene.add(spotLight.target);
@@ -153,17 +153,15 @@ function main() {
     // const helper = new THREE.SpotLightHelper(spotLight);
     // scene.add(helper);
     
-    const light = new THREE.DirectionalLight(color, intensity);
-    light.castShadow = true;
-    light.position.set(-250, 800, -850);
-    light.target.position.set(-550, 40, -450);
-    light.shadow.bias = -0.004;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.position.set(-1, 2, 4);
+    const directionalColor = 0xFFFFFF;
+    const directionalIntensity = 20;
+    const light = new THREE.DirectionalLight(directionalColor, directionalIntensity);
+    light.position.set(12, 0.5, 0);
+    light.target.position.set(-5, 0, 0);
     scene.add(light);
+    scene.add(light.target);
 
-        // randomly generate the position of 20 spheres
+    // randomly generate the position of 20 spheres
     // write a loop to generate 20 spheres, with random positions
     const spheres = [];
     for (let i = 0; i < 50; i++) {
@@ -192,11 +190,11 @@ function main() {
       }
 
     function makeXYZGUI(gui, vector3, name, onChangeFn) {
-    const folder = gui.addFolder(name);
-    folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
-    folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
-    folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
-    folder.open();
+        const folder = gui.addFolder(name);
+        folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
+        folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
+        folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
+        folder.open();
     }
 
     // function updateLight() {
