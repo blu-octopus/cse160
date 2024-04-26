@@ -18,7 +18,7 @@ function main() {
     const near = 0.1;
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 3;
+	camera.position.set( 0, 10, 20 );
 
     const controls = new OrbitControls(camera, canvas);
     controls.target.set(0, 5, 0);
@@ -41,24 +41,18 @@ function main() {
     light.position.set(-1, 2, 4);
     scene.add(light);
 
-    // Load the skybox texture
     const loader2 = new THREE.CubeTextureLoader();
-    const skyboxTexture = loader2.load([
-        './assets/skybox/nx.png',
-        './assets/skybox/ny.png',
-        './assets/skybox/nz.png',
+    const texture = loader2.load([
         './assets/skybox/px.png',
-        './assets/skybox/py.png',
-        './assets/skybox/pz.png'
-    ]);
-    
-    // Create a cube geometry with a large size to encompass the entire scene
-    const skyboxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
-    const skyboxMaterial = new THREE.MeshBasicMaterial({ map: skyboxTexture, side: THREE.BackSide });
-    // Create a mesh with the cube geometry and skybox material
-    const skyboxMesh = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
-    scene.add(skyboxMesh);
+        './assets/skybox/nx.png',
 
+        './assets/skybox/py.png',
+        './assets/skybox/ny.png',
+
+        './assets/skybox/pz.png',
+        './assets/skybox/nz.png',
+    ]);
+    scene.background = texture;
     // Render Function
     function render(time) {
         time *= 0.001;
