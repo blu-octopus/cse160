@@ -1,25 +1,27 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
+import {MTLLoader} from 'three/addons/loaders/MTLLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // Import GLTFLoader
+
 
 function main() {
+    // Canvas and Renderer Setup
+    const canvas = document.querySelector('#c');
+    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 
-	const canvas = document.querySelector( '#c' );
-	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
+    // Camera Setup
+    const fov = 75;
+    const aspect = 2;
+    const near = 0.1;
+    const far = 5;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 2;
 
-	const fov = 75;
-	const aspect = 2; // the canvas default
-	const near = 0.1;
-	const far = 5;
-	const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	camera.position.z = 2;
+    // Scene Setup
+    const scene = new THREE.Scene();
 
-	const scene = new THREE.Scene();
-
-	const boxWidth = 1;
-	const boxHeight = 1;
-	const boxDepth = 1;
-	const geometry = new THREE.BoxGeometry( boxWidth, boxHeight, boxDepth );
-
+    // Lights Setup
     {
         const color = 0xFFFFFF;
         const intensity = 3;
@@ -28,7 +30,13 @@ function main() {
         scene.add(light);
     }
 
-	// const material = new THREE.MeshPhongMaterial( { color: 0x44aa88 } ); // greenish blue
+    // Loading Manager
+    const loadManager = new THREE.LoadingManager();
+
+    // Texture Loader
+    const loader = new THREE.TextureLoader();
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+
     function makeInstance(geometry, color, x) {
         const material = new THREE.MeshPhongMaterial({color});
        
@@ -39,15 +47,12 @@ function main() {
        
         return cube;
     }
-
     const cubes = [
         makeInstance(geometry, 0x44aa88,  0),
         makeInstance(geometry, 0x8844aa, -2),
         makeInstance(geometry, 0xaa8844,  2),
     ];
 
-    const loadManager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader();
     loader.load('./lib/image.png', (texture) => {
         texture.colorSpace = THREE.SRGBColorSpace;
         const material = new THREE.MeshBasicMaterial({
@@ -58,24 +63,7 @@ function main() {
         cubes.push(cube);  // add to our list of cubes to rotate
     });
 
-        
-    function resizeRendererToDisplaySize( renderer ) {
-		const canvas = renderer.domElement;
-		const width = canvas.clientWidth;
-		const height = canvas.clientHeight;
-		const needResize = canvas.width !== width || canvas.height !== height;
-		if ( needResize ) {
-			renderer.setSize( width, height, false );
-		}
-		return needResize;
-	}
-
-    function loadColorTexture( path ) {
-        const texture = loader.load( path );
-        texture.colorSpace = THREE.SRGBColorSpace;
-        return texture;
-      }
-
+    // Geometry and Materials
     const materials = [
         new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower1.png')}),
         new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower2.png')}),
@@ -84,37 +72,57 @@ function main() {
         new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower5.png')}),
         new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower6.png')}),
     ];
+        
+    // Load Color Texture Function
+    function loadColorTexture(path) {
+        const texture = loader.load(path);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        return texture;
+    }
 
+    // Load Mesh with Color Textures
     loadManager.onLoad = () => {
         const cube = new THREE.Mesh(geometry, materials);
         scene.add(cube);
-        cubes.push(cube);  // add to our list of cubes to rotate
+        cubes.push(cube); // add to our list of cubes to rotate
     };
-	const cube = new THREE.Mesh( geometry, materials );
 
+    // Resize Renderer to Display Size
+    function resizeRendererToDisplaySize(renderer) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            renderer.setSize(width, height, false);
+        }
+        return needResize;
+    }
+
+    // Render Function
     function render(time) {
-        time *= 0.001;  // convert time to seconds
+        time *= 0.001;
 
-		if ( resizeRendererToDisplaySize( renderer ) ) {
-			const canvas = renderer.domElement;
-			camera.aspect = canvas.clientWidth / canvas.clientHeight;
-			camera.updateProjectionMatrix();
-		}
+        if (resizeRendererToDisplaySize(renderer)) {
+            const canvas = renderer.domElement;
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+        }
 
         cubes.forEach((cube, ndx) => {
-          const speed = 1 + ndx * .1;
-          const rot = time * speed;
-          cube.rotation.x = rot;
-          cube.rotation.y = rot;
+            const speed = 1 + ndx * .1;
+            const rot = time * speed;
+            cube.rotation.x = rot;
+            cube.rotation.y = rot;
         });
-        
+
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
-    // renderer.render( scene, camera );
+
+    // Start Rendering
     requestAnimationFrame(render);
 }
 
-
+// Start Main Function
 main();
-// requestAnimationFrame(render);
