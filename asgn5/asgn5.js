@@ -1,103 +1,61 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
-import {MTLLoader} from 'three/addons/loaders/MTLLoader.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // Import GLTFLoader
-
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'; // Import GLTFLoader
 
 function main() {
     // Canvas and Renderer Setup
     const canvas = document.querySelector('#c');
-    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
-
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas,
+        alpha: true,
+      });
+    
     // Camera Setup
     const fov = 75;
     const aspect = 2;
     const near = 0.1;
-    const far = 5;
+    const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 2;
+    camera.position.z = 3;
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 5, 0);
+    controls.update();
 
     // Scene Setup
+    const loader = new GLTFLoader();
     const scene = new THREE.Scene();
 
-    // Lights Setup
-    {
-        const color = 0xFFFFFF;
-        const intensity = 3;
-        const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(-1, 2, 4);
-        scene.add(light);
-    }
-
-    // Loading Manager
-    const loadManager = new THREE.LoadingManager();
-
-    // Texture Loader
-    const loader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    function makeInstance(geometry, color, x) {
-        const material = new THREE.MeshPhongMaterial({color});
-       
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-       
-        cube.position.x = x;
-       
-        return cube;
-    }
-    const cubes = [
-        makeInstance(geometry, 0x44aa88,  0),
-        makeInstance(geometry, 0x8844aa, -2),
-        makeInstance(geometry, 0xaa8844,  2),
-    ];
-
-    loader.load('./lib/image.png', (texture) => {
-        texture.colorSpace = THREE.SRGBColorSpace;
-        const material = new THREE.MeshBasicMaterial({
-            map: texture,
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-        cubes.push(cube);  // add to our list of cubes to rotate
+    loader.load("./assets/samurai-capy/scene.gltf", function (gltf) {
+        const model = gltf.scene;
+        scene.add(model);
     });
 
-    // Geometry and Materials
-    const materials = [
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower1.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower2.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower3.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower4.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower5.png')}),
-        new THREE.MeshBasicMaterial({map: loadColorTexture('./lib/flower6.png')}),
-    ];
-        
-    // Load Color Texture Function
-    function loadColorTexture(path) {
-        const texture = loader.load(path);
+
+    // Lights Setup
+    const color = 0xFFFFFF;
+    const intensity = 3;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-1, 2, 4);
+    scene.add(light);
+
+    // Load the skybox texture
+    const loader2 = new THREE.TextureLoader();
+    const skyboxTexture = loader2.load(
+      './assets/skybox/nightsky.jpeg',
+      () => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
         texture.colorSpace = THREE.SRGBColorSpace;
-        return texture;
-    }
-
-    // Load Mesh with Color Textures
-    loadManager.onLoad = () => {
-        const cube = new THREE.Mesh(geometry, materials);
-        scene.add(cube);
-        cubes.push(cube); // add to our list of cubes to rotate
-    };
-
-    // Resize Renderer to Display Size
-    function resizeRendererToDisplaySize(renderer) {
-        const canvas = renderer.domElement;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        const needResize = canvas.width !== width || canvas.height !== height;
-        if (needResize) {
-            renderer.setSize(width, height, false);
-        }
-        return needResize;
-    }
+        scene.background = texture;
+      });
+    // Create a cube geometry with a large size to encompass the entire scene
+    const skyboxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
+    const skyboxMaterial = new THREE.MeshBasicMaterial({ map: skyboxTexture, side: THREE.BackSide });
+    // Create a mesh with the cube geometry and skybox material
+    const skyboxMesh = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+    scene.add(skyboxMesh);
 
     // Render Function
     function render(time) {
@@ -109,15 +67,20 @@ function main() {
             camera.updateProjectionMatrix();
         }
 
-        cubes.forEach((cube, ndx) => {
-            const speed = 1 + ndx * .1;
-            const rot = time * speed;
-            cube.rotation.x = rot;
-            cube.rotation.y = rot;
-        });
-
         renderer.render(scene, camera);
         requestAnimationFrame(render);
+    }
+
+    // Resize Renderer to Display Size
+    function resizeRendererToDisplaySize(renderer) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            renderer.setSize(width, height, false);
+        }
+        return needResize;
     }
 
     // Start Rendering
