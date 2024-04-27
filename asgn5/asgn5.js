@@ -73,27 +73,38 @@ function main() {
         scene.add(bridgeModel);
     });
 
-    loader.load("./assets/water/scene.gltf", function (waterGltf) {
-        const waterModel = waterGltf.scene;
-        waterModel.position.set(0, 67, 0);
-        scene.add(waterModel);
-    });
+    // loader.load("./assets/water/scene.gltf", function (waterGltf) {
+    //     const waterModel = waterGltf.scene;
+    //     waterModel.position.set(0, 67, 0);
+    //     scene.add(waterModel);
+    // });
 
     const txturLoader = new THREE.TextureLoader();
-    const cubeTexture = txturLoader.load('./assets/skybox/nightsky.jpeg');
+    // const cubeTexture = txturLoader.load('./assets/skybox/nightsky.jpeg');
 
-    function makeInstance(geometry, texture, x, y) {
-        const material = new THREE.MeshPhongMaterial({  
-            map: texture,
-        });
-        const cube = new THREE.Mesh(geometry, material);
+    function makeInstance(geometry, x, y) {
+        function loadColorTexture( path ) {
+            const texture = txturLoader.load( path );
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+        const materials = [
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/px.png')}),
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/nx.png')}),
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/py.png')}),
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/ny.png')}),
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/pz.png')}),
+            new THREE.MeshBasicMaterial({map: loadColorTexture('./assets/skybox/nz.png')}),
+        ];
+
+        const cube = new THREE.Mesh(geometry, materials);
         scene.add(cube);
         cube.position.x = x;
         cube.position.y = y;
         return cube;
     }
     const cubes = [
-        makeInstance(geometry, cubeTexture,  12, 0.5),
+        makeInstance(geometry, 12, 0.5),
         // makeInstance(geometry, 0x8844aa, -2),
         // makeInstance(geometry, 0xaa8844,  2),
     ];
@@ -127,7 +138,7 @@ function main() {
     const skyintensity = 2;
     const skylight = new THREE.HemisphereLight(skyColor, groundColor, skyintensity);
 
-    const spotIntensity = 999;
+    const spotIntensity = 50;
     const spotColor = 0xFFBB88; 
     const spotLight = new THREE.SpotLight(spotColor, spotIntensity);
     spotLight.position.set(40, 20, 0);
