@@ -1,12 +1,12 @@
 // ColoredPoint.js (c) 2012 matsuda
 // Vertex shader program
-var VSHADER_SOURCE =`
+var VSHADER_SOURCE = `
   attribute vec4 a_Position;
-  uniform float u_Size;
+  uniform mat4 u_ModelMatrix;
+  uniform mat4 u_GlobalRotateMatrix;
   void main() {
-    gl_Position = a_Position;
-    gl_PointSize = u_Size;
-  }`;
+    gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
+  }`
 
 // Fragment shader program
 var FSHADER_SOURCE =`
@@ -21,6 +21,8 @@ let gl;
 let a_Position;
 let u_FragColor;
 let u_Size;
+let u_ModelMatrix;
+let u_GlobalRotateMatrix;
 // var ducked = false;
 
 function setupWebGL() {
@@ -57,20 +59,40 @@ function connectVariablesToGLSL() {
     return;
   }
 
-    // Get the storage location of u_Size
-    u_Size = gl.getUniformLocation(gl.program, 'u_Size');
-    if (!u_Size) {
-      console.log('Failed to get the storage location of u_Size');
-      return;
-    }
+  // Get the storage location of u_ModelMatrix
+  u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
+  if (!u_ModelMatrix) {
+    console.log('Failed to get the storage location of u_ModelMatrix');
+    return;
+  }
+
+  u_GlobalRotateMatrix = gl.getUniformLocation(gl.program, 'u_GlobalRotateMatrix');
+  if(!u_GlobalRotateMatrix) {
+    console.log("failed to get the storage loc of u_GlobalRotateMatrix");
+    return;
+  }
+
+  //set the initial value for the model matrix to the identity matrix
+  var identityM = new Matrix4();
+  gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
+
 }
 
 //global related UI
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0]; // The color selected from the color dialog box
 let g_selectedSize = 10; // The size of the point
 let g_selectedType = "point"; // The type of the shape   
+let g_globalAngle = 0;
 
 function addActionsForHtmlUI() {
+
+  document.getElementById('angleSlide').addEventListener('change', function() {
+    console.log("angle clicked"); 
+    g_globalAngle = this.value; 
+    renderAllShapes(); 
+    console.log("rendered shape after camera angle")
+  });
+
 
     //clear button
     document.getElementById('clear').onclick = function() { 
@@ -114,21 +136,20 @@ function addActionsForHtmlUI() {
         g_selectedColor = [r.value/100, g.value/100, b.value/100, 1.0];
         slider.style.setProperty("blueSlide", blue);
     });
-
     //size slider
-    const s = document.querySelector('#sizeSlide');
-    s.addEventListener('change', () => {
-        g_selectedSize = s.value;
-    });
+    // const s = document.querySelector('#sizeSlide');
+    // s.addEventListener('change', () => {
+    //     g_selectedSize = s.value;
+    // });
 
     //segment slider
-    const segmentSlider = document.getElementById('segmentSlide');
-    const segmentValue = document.getElementById('segmentValue');
-    segmentValue.textContent = segmentSlider.value; // Set initial value
-    segmentSlider.addEventListener('input', function() {
-        segmentValue.textContent = segmentSlider.value; // Update value as slider changes
-        g_selectedSegments = parseInt(segmentSlider.value);
-    });
+    // const segmentSlider = document.getElementById('segmentSlide');
+    // const segmentValue = document.getElementById('segmentValue');
+    // segmentValue.textContent = segmentSlider.value; // Set initial value
+    // segmentSlider.addEventListener('input', function() {
+    //     segmentValue.textContent = segmentSlider.value; // Update value as slider changes
+    //     g_selectedSegments = parseInt(segmentSlider.value);
+    // });
 
     // Add event listener to the mouseup event on the document
     // document.addEventListener('mouseup', function(event) {
@@ -158,10 +179,7 @@ function main() {
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
 }
-
-// var g_points = [];  // The array for the position of a mouse press
-// var g_colors = [];  // The array to store the color of a point
-// var g_sizes = [];  
+ 
 var g_shapesList = [];  // The array for the position of a mouse press
 
 function click(ev) {
@@ -187,13 +205,6 @@ function click(ev) {
     renderAllShapes();
 }
 
-function changeSegmentValue(){
-    const segmentValue = document.getElementById('segmentValue');
-    const segmentSlider = document.getElementById('segmentSlide');
-    segmentValue.textContent = segmentSlider.value; // Update value as slider changes
-    g_selectedSegments = parseInt(segmentSlider.value);
-}
-
 function convertCoordinatesEventToGL(ev){
     var x = ev.clientX; // x coordinate of a mouse pointer
     var y = ev.clientY; // y coordinate of a mouse pointer
@@ -205,9 +216,12 @@ function convertCoordinatesEventToGL(ev){
 }
 
 function renderAllShapes(){
-      // Clear <canvas>
-  gl.clear(gl.COLOR_BUFFER_BIT);
   var startTime = performance.now();
+
+  var globalRotMat= new Matrix4().rotate(g_globalAngle,0,1,0);
+  gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
+  
+  gl.clear(gl.COLOR_BUFFER_BIT);
 
   // if(ducked){
   //   drawDucky();
@@ -221,7 +235,16 @@ function renderAllShapes(){
 
   var body = new Cube();
   body.color = [1.0, 0.0, 0.0, 1.0];
+  body.matrix.translate(-0.25, -0.5, 0.0);
+  body.matrix.scale(0.5, 1.0, .5);
   body.render();
+
+  var leftArm = new Cube();
+  leftArm.color = [1.0, 1.0, 0.0, 1.0];
+  leftArm.matrix.translate(0.7, 0.0, 0.0);
+  leftArm.matrix.rotate(45, 0, 0, 1);
+  leftArm.matrix.scale(0.25, 0.7, 0.5);
+  leftArm.render();
 
   var duration = performance.now() - startTime;
   sendTextToHTML("ms: " + Math.floor(duration) + "fps: " + Math.floor(1000/duration));
