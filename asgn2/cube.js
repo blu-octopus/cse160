@@ -12,12 +12,35 @@ class Cube {
         u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
 
-        drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0] );
-        drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,0.0, 1.0,1.0,0.0] );
+        // FRONT SIDE
+    // Pass the color of a point to u_FragColor variable
+    gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  1.0,0.0,0.0,  1.0,1.0,0.0 ]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  0.0,1.0,0.0,  1.0,1.0,0.0 ]);
 
-        gl.uniform4f(u_FragColor, rgba[0]*9,rgba[1]*9,rgba[2]*9,rgba[3]);
+    // BOTTOM SIDE
+    gl.uniform4f(u_FragColor, rgba[0] *0.9, rgba[1] *0.9, rgba[2]*0.9, rgba[3]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  1.0,0.0,0.0,  1.0,0.0,1.0 ]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  0.0,0.0,1.0,  1.0,0.0,1.0 ]);
 
-        drawTriangle3D( [0,1,0, 0.0,1.0,1.0, 1.0,1.0,1.0] );
-        drawTriangle3D( [0,1,0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
+    // LEFT SIDE
+    gl.uniform4f(u_FragColor, rgba[0] *0.8, rgba[1] *0.8, rgba[2]*0.8, rgba[3]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  0.0,0.0,1.0,  0.0,1.0,1.0 ]);
+    drawTriangle3D( [0.0, 0.0, 0.0,  0.0,1.0,0.0,  0.0,1.0,1.0 ]);
+
+    // BACK SIDE
+    gl.uniform4f(u_FragColor, rgba[0] *0.7, rgba[1] *0.7, rgba[2]*0.7, rgba[3]);
+    drawTriangle3D( [0.0, 0.0, 1.0,  0.0,1.0,1.0,  1.0,1.0,1.0 ]);
+    drawTriangle3D( [0.0, 0.0, 1.0,  1.0,0.0,1.0,  1.0,1.0,1.0 ]);
+
+    // RIGHT SIDE
+    gl.uniform4f(u_FragColor, rgba[0] *0.6, rgba[1] *0.6, rgba[2]*0.6, rgba[3]);
+    drawTriangle3D( [1.0, 0.0, 0.0,  1.0,1.0,0.0,  1.0,1.0,1.0 ]);
+    drawTriangle3D( [1.0, 0.0, 0.0,  1.0,0.0,1.0,  1.0,1.0,1.0 ]);
+    
+    // TOP SIDE
+    gl.uniform4f(u_FragColor, rgba[0] *0.5, rgba[1] *0.5, rgba[2]*0.5, rgba[3]);
+    drawTriangle3D( [0.0, 1.0, 0.0,  1.0,1.0,0.0,  1.0,1.0,1.0 ]);
+    drawTriangle3D( [0.0, 1.0, 0.0,  0.0,1.0,1.0,  1.0,1.0,1.0 ]);
     }
 }

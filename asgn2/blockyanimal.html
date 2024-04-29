@@ -20,7 +20,7 @@
                 <img src="./src/frame-right.png" width="30%" style="position: absolute; top: 0px; left: 375px; pointer-events: none;" >
                 <img src="./src/frame-top.png" width="135%" style="position: absolute; top: -100px; left: -60px; pointer-events: none;" >
                 <img src="./src/frame-bottom.png" width="135%" style="position: absolute; top: 350px; left: -50px; pointer-events: none;" > -->
-                <canvas id="webgl" width="600" height="600" >
+                <canvas id="webgl" width="500" height="500" >
                     Please use a browser that supports "canvas"
                 </canvas>
             </div>
@@ -31,52 +31,13 @@
         <div class="item">
             <!-- button type -->
             <div>
-                Drawing Mode:
-                <br><br>
-                <button type = "button" id="pointButton" class="button-23">⬛ Point</button>
-                <button type = "button" id="triButton" class="button-23">▲ Triangle</button>
-                <button type = "button" id="circleButton" class="button-23">⚫ Circle</button>
-                <!-- <button type = "button" id="duckyButton" class="button-23">🐥 Duck</button> -->
             </div>
 
             <!-- slider -->
             <div>
-                <br>
-                Shape Color:
-                <p>
-                    <p>❤️Red..<input type="range" min="0" max="100" value="100" class="slider" id="redSlide" /></p> 
-                    <p>💚Green <input type="range" min="0" max="100" value="100" class="slider" id="greenSlide" /></p> 
-                    <p>💙Blue  <input type="range"min="0" max="100" value="100" class="slider" id="blueSlide" /></p> 
-                    <p>Camera Angle  <input type="range"min="0" max="90" value="5" class="slider" id="angleSlide" /></p> 
-                    <p id="fps"></p>
-                </p>
-                <!-- size -->
-                <!-- <br>
-                Shape Size: 
-                <input type="range" min="1" max="100" value="10" class="slider" id="sizeSlide" /> -->
-                <!-- <br>(Circle) Segment Count: 
-                <span id="segmentValue">10</span>
-                <input type="range" min="3" max="20" value="10" class="slider" id="segmentSlide" /> -->
+                <p>Camera Angle  <input type="range"min="-90" max="90" value="5" class="slider" id="angleSlide" /></p> 
+                <p id="fps"></p>
             </div>
-
-            <!-- clear button -->
-            <br><br><br><br>
-            <a href="#" class="button button--piyo" id="clear">
-                <div class="button__wrapper">
-                    <span class="button__text">Clear</span>
-                </div>
-                <div class="characterBox">
-                    <div class="character wakeup">
-                        <div class="character__face"></div>
-                    </div>
-                    <div class="character wakeup">
-                        <div class="character__face"></div>
-                    </div>
-                    <div class="character">
-                        <div class="character__face"></div>
-                    </div>
-                </div>
-            </a>
         </div>
     </div>
     <script src="./lib/webgl-utils.js" defer></script>
