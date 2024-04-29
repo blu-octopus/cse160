@@ -170,26 +170,22 @@ function renderAllShapes(){
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  var body = new Cube();
-  body.color = [1.0, 0.0, 0.0, 1.0];
-  body.matrix.translate(-0.25, -0.75, 0.0);
-  body.matrix.scale(-0.5, .3, .5);
-  body.render();
+  drawCapybara();
 
-  var leftArm = new Cube();
-  leftArm.color = [1.0, 1.0, 0.0, 1.0];
-  leftArm.matrix.translate(0, -0.5, 0.0);
-  leftArm.matrix.rotate(0, 0, 0, 1);
-  leftArm.matrix.scale(0.25, 0.7, 0.5);
-  leftArm.matrix.translate(-0.5, 0.0, 0.0);
-  leftArm.render();
+  // var leftArm = new Cube();
+  // leftArm.color = [1.0, 1.0, 0.0, 1.0];
+  // leftArm.matrix.translate(0, -0.5, 0.0);
+  // leftArm.matrix.rotate(0, 0, 0, 1);
+  // leftArm.matrix.scale(0.25, 0.7, 0.5);
+  // leftArm.matrix.translate(-0.5, 0.0, 0.0);
+  // leftArm.render();
 
-  var rightArm = new Cube();
-  rightArm.color = [1.0, 0.0, 1.0, 1.0];
-  rightArm.matrix.translate(-.1, .1, 0.0);
-  rightArm.matrix.rotate(-30, 1, 0, 0);
-  rightArm.matrix.scale(.2, .4, .2);
-  rightArm.render();
+  // var rightArm = new Cube();
+  // rightArm.color = [1.0, 0.0, 1.0, 1.0];
+  // rightArm.matrix.translate(-.1, .1, 0.0);
+  // rightArm.matrix.rotate(-30, 1, 0, 0);
+  // rightArm.matrix.scale(.2, .4, .2);
+  // rightArm.render();
 
   var duration = performance.now() - startTime;
   sendTextToHTML("ms: " + Math.floor(duration) + "fps: " + Math.floor(1000/duration));
@@ -198,4 +194,21 @@ function renderAllShapes(){
 function sendTextToHTML(text) {
   var htmlElem = document.querySelector('#fps');
   htmlElem.innerHTML = text;
+}
+
+function drawCapybara(){
+
+  // capybara is a square looking rodent that is very cute
+  // body color #E6AF88
+  // nose and ears color #C38175
+  // eyes color #974C47
+  let bodyColor = [0.9, 0.7, 0.5, 1.0];
+  let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
+  let eyesColor = [0.6, 0.3, 0.3, 1.0];
+  
+  var body = new Cube();
+  body.color = bodyColor;
+  body.matrix.translate(0.5, 0.2, 0);
+  body.matrix.scale(.8, 1, .8);
+  body.render();
 }
