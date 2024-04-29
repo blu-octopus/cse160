@@ -12,7 +12,7 @@ Coded with extensive help from chat-GPT and co-pilot.
 Drawing tools on the canvas. Duck themed. 
 Coded with extensive help from chat-GPT and co-pilot.
 
-## [Assignment 5 part a](https://blu-octopus.github.io/cse160/asgn5/asgn5)
+## [Assignment 5 part a](https://blu-octopus.github.io/cse160/asgn5a/asgn5)
 
 Rendering three.js scene with a rotating cube and a rotating sphere.
 
