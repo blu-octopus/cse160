@@ -113,7 +113,7 @@ function main() {
     let [x,y] = convertCoordinatesEventToGL(e);
     g_lastX = x;
     g_lastY = y;
-    renderAllShapes();
+    // renderAllShapes();
   };
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
 
@@ -143,7 +143,7 @@ function click(ev) {
   }
   g_lastX = x;
   g_lastY = y;
-  // renderAllShapes();
+  renderAllShapes();
 }
 
 function convertCoordinatesEventToGL(ev){
