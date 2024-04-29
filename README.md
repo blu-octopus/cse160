@@ -16,3 +16,7 @@ Coded with extensive help from chat-GPT and co-pilot.
 
 Rendering three.js scene with a rotating cube and a rotating sphere.
 
+## [Assignment 2](https://blu-octopus.github.io/cse160/asgn2/asgn2)
+
+Blocky animal.
+
