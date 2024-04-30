@@ -239,7 +239,7 @@ function renderAllShapes(){
   drawCapybara();
 
   var duration = performance.now() - startTime;
-  sendTextToHTML("ms: " + Math.floor(duration) + " fps: " + Math.floor(1000/duration));
+  sendTextToHTML("ms: " + Math.floor(duration) + " fps: " + Math.floor(10/duration));
 }
 
 function sendTextToHTML(text) {
