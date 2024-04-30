@@ -83,6 +83,7 @@ let g_selectedColor = [1.0, 1.0, 1.0, 1.0]; // The color selected from the color
 let g_selectedSize = 10; // The size of the point
 let g_selectedType = "point"; // The type of the shape   
 let g_globalAngle = 0;
+let g_bodyAngle = 0;
 let g_lastX = 0;
 let g_lastY = 0;
 let g_x = 0;
@@ -93,10 +94,16 @@ let dragging = false;
 function addActionsForHtmlUI() {
 
   document.getElementById('angleSlide').addEventListener('change', function() {
-    console.log("angle clicked"); 
+    console.log("angle slider clicked"); 
     g_globalAngle = this.value; 
     renderAllShapes(); 
-    console.log("rendered shape after camera angle")
+    // console.log("rendered shape after camera angle")
+  });
+
+  document.getElementById('bodySlide').addEventListener('change', function() {
+    console.log("body slider clicked"); 
+    g_bodyAngle = this.value; 
+    renderAllShapes(); 
   });
 
 }
@@ -174,21 +181,6 @@ function renderAllShapes(){
 
   drawCapybara();
 
-  // var leftArm = new Cube();
-  // leftArm.color = [1.0, 1.0, 0.0, 1.0];
-  // leftArm.matrix.translate(0, -0.5, 0.0);
-  // leftArm.matrix.rotate(0, 0, 0, 1);
-  // leftArm.matrix.scale(0.25, 0.7, 0.5);
-  // leftArm.matrix.translate(-0.5, 0.0, 0.0);
-  // leftArm.render();
-
-  // var rightArm = new Cube();
-  // rightArm.color = [1.0, 0.0, 1.0, 1.0];
-  // rightArm.matrix.translate(-.1, .1, 0.0);
-  // rightArm.matrix.rotate(-30, 1, 0, 0);
-  // rightArm.matrix.scale(.2, .4, .2);
-  // rightArm.render();
-
   var duration = performance.now() - startTime;
   sendTextToHTML("ms: " + Math.floor(duration) + "fps: " + Math.floor(1000/duration));
 }
@@ -201,9 +193,7 @@ function sendTextToHTML(text) {
 function drawCapybara(){
 
   // capybara is a square looking rodent that is very cute
-  // body color #E6AF88
-  // nose and ears color #C38175
-  // eyes color #974C47
+  // body color #E6AF88, nose and ears color #C38175, eyes color #974C47
   let bodyColor = [0.9, 0.7, 0.5, 1.0];
   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
@@ -213,75 +203,124 @@ function drawCapybara(){
   var head = new Cube();
   head.color = bodyColor;
   head.matrix.scale(.4, .6, .5);
-  head.matrix.translate(0,0,0);
+  head.matrix.translate(0,0, 0 + g_bodyAngle/100);
   head.render();
+  head.matrix.scale(10/4, 10/6, 2);
 
-  var ear1 = new Cube();
-  ear1.color = noseEarsColor;
-  ear1.matrix.scale(.1, .1, .1);
-  ear1.matrix.translate(0, 0, 4.8);
-  ear1.render();
+  // var earLeft = new Cube();
+  // earLeft.color = noseEarsColor;
+  // earLeft.matrix = head.matrix
+  // earLeft.matrix.scale(.22, .16, .2);
+  // earLeft.matrix.translate(0, 0, 4.8);
+  // earLeft.render();
+  var earLeft = new Cube();
+  earLeft.color = noseEarsColor;
+  earLeft.matrix = head.matrix;
+  earLeft.matrix.scale(.1, .1, .1);
+  earLeft.matrix.translate(0, 0, 4.8);
+  earLeft.render();
 
-  var ear2 = new Cube();
-  ear2.color = noseEarsColor;
-  ear2.matrix.scale(.1, .1, .1);
-  ear2.matrix.translate(3, 0, 4.8);
-  ear2.render();
+  var earRight = new Cube();
+  earRight.color = noseEarsColor;
+  earRight.matrix = earLeft.matrix;
+  // earRight.matrix.scale(.1, .1, .1);
+  earRight.matrix.translate(3, 0, 0);
+  earRight.render();
+  //cancel out ear right
+  earRight.matrix.translate(-3, 0, -4.8);
+  earRight.matrix.scale(10, 10, 10);
 
+  // var nose = new Cube();
+  // nose.color = noseEarsColor;
+  // nose.matrix = head.matrix;
+  // nose.matrix.scale(4, 1, 5);
+  // nose.matrix.translate(-.75, 5.9, -0.95);
+  // nose.render();
   var nose = new Cube();
   nose.color = noseEarsColor;
+  nose.matrix = head.matrix;
   nose.matrix.scale(.4, 0.1, .5);
   nose.matrix.translate(0, 6, 0);
   nose.render();
+  // cancel out nose
+  nose.matrix.translate(0, -6, 0);
+  nose.matrix.scale(10/4, 10/1, 2);
 
   var eye1 = new Cube();
   eye1.color = eyeslipsColor;
+  eye1.matrix = head.matrix;
   eye1.matrix.scale(.01, .1, .1);
   eye1.matrix.translate(-1, 2, 3);
   eye1.render();
+  //cancel out  eye1
+  eye1.matrix.translate(1, -2, -3);
 
   var eye2 = new Cube();
   eye2.color = eyeslipsColor;
-  eye2.matrix.scale(.01, .1, .1);
+  eye2.matrix = head.matrix;
   eye2.matrix.translate(40, 2, 3);
   eye2.render();
+  // cancel out eye2
+  eye2.matrix.translate(-40, -2, -3);
+  eye2.matrix.scale(100, 10, 10);
 
   var lip2 = new Cube();
   lip2.color = eyeslipsColor;
+  lip2.matrix = head.matrix;
   lip2.matrix.scale(.05, .01, .3);
   lip2.matrix.translate(3.5, 70, 0.2);
   lip2.render();
+  // cancel out lip2
+  lip2.matrix.translate(-3.5, -70, -0.2);
+  lip2.matrix.scale(100/5, 100, 10/3);
 
   var lip1 = new Cube();
   lip1.color = eyeslipsColor;
+  lip1.matrix = head.matrix;
   lip1.matrix.scale(.3, .01, .05);
   lip1.matrix.translate(.2, 70, 7);
-  // lip1.matrix.rotate(1, 0, 0, 1);
   lip1.render();
+  // cancel out lip1
+  lip1.matrix.translate(-.2, -70, -7);
+  lip1.matrix.scale(10/3, 100, 100/5);
 
   var body = new Cube();
   body.color = bodyColor;
+  body.matrix = head.matrix;
   body.matrix.scale(.4, .7, .4);
-  body.matrix.translate(0, -.3, -1);
+  body.matrix.translate(0, -.3, -1 );
   body.render();
+  // cancel out body
+  body.matrix.translate(0, .3, 1);
+  body.matrix.scale(10/4, 10/7, 10/4);
 
   //add a tub underneath body, which is a blue cube surrounded by 5 brown cubes lining the sides
-  var water = new Cube();
-  water.color = waterColor;
-  water.matrix.scale(1, 1, .6);
-  water.matrix.translate(-0.3, -0.3, -1.2);
-  water.render();
+  // write a function to generate 10 rectangles side by side for water, within this current range
+  // each rectangle = scale(1, 0.1, .6), translate(-0.3, -30 + i*0.1, -1.2), color = waterColor
+  // var water = new Cube();
+  // water.color = waterColor;
+  // water.matrix.scale(1, 1, .6);
+  // water.matrix.translate(-0.3, -0.3, -1.2);
+  // water.render();
+  for (var i = 0; i < 10; i++){
+    var water = new Cube();
+    water.color = waterColor;
+    water.matrix.scale(1, 0.1, .6);
+    water.matrix.translate(-0.3, i + -3, -1.2);
+    water.render();
+  }
+
   //add walls now
   var wallLeft = new Cube();
   wallLeft.color = wallColor;
   wallLeft.matrix.scale(.1, 1, .7);
-  wallLeft.matrix.translate(-4, -0.3, -1.1);
+  wallLeft.matrix.translate(-3.96, -0.3, -1.1);
   wallLeft.render();
 
   var wallRight = new Cube();
   wallRight.color = wallColor;
   wallRight.matrix.scale(.1, 1, .7);
-  wallRight.matrix.translate(7, -0.3, -1.1);
+  wallRight.matrix.translate(7.05, -0.3, -1.1);
   wallRight.render();
 
   var wallBack = new Cube();
@@ -301,6 +340,5 @@ function drawCapybara(){
   wallBottom.matrix.scale(1.2, 1.2, .1);
   wallBottom.matrix.translate(-.33, -0.33, -8);
   wallBottom.render();
-
 
 }
