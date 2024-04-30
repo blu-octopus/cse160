@@ -80,8 +80,7 @@ function connectVariablesToGLSL() {
 
 //global related UI
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0]; // The color selected from the color dialog box
-let g_selectedSize = 10; // The size of the point
-let g_selectedType = "point"; // The type of the shape   
+  
 let g_globalAngle = 0;
 let g_bodyAngle = 0;
 let g_headAngle = 0;
@@ -95,6 +94,7 @@ let g_yAngle = 0;
 let g_zAngle = 0;
 let dragging = false;
 let animation = false;
+let onigiri = false;
 
 function addActionsForHtmlUI() {
 
@@ -152,7 +152,11 @@ function main() {
     let [x,y] = convertCoordinatesEventToGL(e);
     g_lastX = x;
     g_lastY = y;
-    // renderAllShapes();
+
+    if (e.shiftKey){
+      onigiri = !onigiri;
+      animation = true;
+    }
   };
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
 
@@ -252,7 +256,7 @@ function drawCapybara(){
   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
   let waterColor = [163/255, 220/255, 237/255, 0.9];
   // let wallColor = [0.5, 0.3, 0.1, 1.0];
-  let wallColor = [162/255, 121/255, 85/255, 1.0];
+  let wallColor = [180/255, 115/255, 65/255, 1.0];
   
   var head = new Cube();
   head.color = bodyColor;
@@ -398,6 +402,22 @@ function drawCapybara(){
   wallBottom.matrix.translate(-.33, -0.33, -8);
   wallBottom.render();
 
+  // orange on head
+  var orange = new Cube();
+  orange.color = [1, 0.7, 0.4, 1];
+  orange.matrix.scale(.15, .15, .15);
+  orange.matrix.translate(0.85, .5, 3 + g_bodyAngle/100*4);
+  orange.matrix.rotate(g_headAngle, 0, 0, 1);
+  orange.render();
+
+  if(onigiri == true){
+    drawOnigiri();
+  }
+
+}
+
+drawOnigiri = function(){ 
+
   var rice = new Prism();
   rice.color = [241/255, 244/255, 251/255, 1.0];
   rice.matrix.scale(.25, .25, .25);
@@ -410,9 +430,8 @@ function drawCapybara(){
   var seaweed = new Cube();
   seaweed.color = [0.0, 0.5, 0.0, 1.0];
   seaweed.matrix = rice.matrix;
-
   seaweed.matrix.scale(.5, .5, .6);
   seaweed.matrix.translate(.5, 0, -.1);
   seaweed.render();
-
 }
+
