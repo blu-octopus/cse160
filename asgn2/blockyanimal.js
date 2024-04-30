@@ -118,7 +118,8 @@ function main() {
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
 
   // Specify the color for clearing <canvas>
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(153/255, 210/255, 227/255, 1);
+  // gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -206,6 +207,8 @@ function drawCapybara(){
   let bodyColor = [0.9, 0.7, 0.5, 1.0];
   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
+  let waterColor = [163/255, 220/255, 237/255, 1];
+  let wallColor = [0.5, 0.3, 0.1, 1.0];
   
   var head = new Cube();
   head.color = bodyColor;
@@ -271,12 +274,46 @@ function drawCapybara(){
 
   var body = new Cube();
   body.color = bodyColor;
-  body.matrix.scale(.5, .3, .5);
-  body.matrix.translate(0, -2, 0);
+  body.matrix.scale(.4, .6, .2);
+  body.matrix.translate(0, -.2, -1);
   body.render();
 
-  // var testTriangle = new Triangle3D();
-  // testTriangle.matrix.color = [1.0, 1.0, 1.0, 1.0];
-  // testTriangle.matrix.render();
-  
+  //add a tub underneath body, which is a blue cube surrounded by 5 brown cubes lining the sides
+  var water = new Cube();
+  water.color = waterColor;
+  water.matrix.scale(1, 1, .6);
+  water.matrix.translate(-0.3, -0.3, -1.2);
+  water.render();
+  //add walls now
+  var wallLeft = new Cube();
+  wallLeft.color = wallColor;
+  wallLeft.matrix.scale(.1, 1, .7);
+  wallLeft.matrix.translate(-4, -0.3, -1.1);
+  wallLeft.render();
+
+  var wallRight = new Cube();
+  wallRight.color = wallColor;
+  wallRight.matrix.scale(.1, 1, .7);
+  wallRight.matrix.translate(7, -0.3, -1.1);
+  wallRight.render();
+
+  var wallBack = new Cube();
+  wallBack.color = wallColor;
+  wallBack.matrix.scale(1.2, .1, .7);
+  wallBack.matrix.translate(-.33, -4, -1.1);
+  wallBack.render();
+
+  var wallFront = new Cube();
+  wallFront.color = wallColor;
+  wallFront.matrix.scale(1.2, .1, .7);
+  wallFront.matrix.translate(-.33, 7, -1.1);
+  wallFront.render();
+
+  var wallBottom = new Cube();
+  wallBottom.color = wallColor;
+  wallBottom.matrix.scale(1.2, 1.2, .1);
+  wallBottom.matrix.translate(-.33, -0.33, -8);
+  wallBottom.render();
+
+
 }
