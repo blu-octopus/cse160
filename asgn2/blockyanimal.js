@@ -85,20 +85,32 @@ let g_selectedType = "point"; // The type of the shape
 let g_globalAngle = 0;
 let g_bodyAngle = 0;
 let g_headAngle = 0;
+let g_earAngle = 0;
 let g_lastX = 0;
 let g_lastY = 0;
 let g_x = 0;
 let g_yAngle = 0;
 let g_zAngle = 0;
 let dragging = false;
+let animation = false;
 
 function addActionsForHtmlUI() {
+
+  // Button to turn animation on and off
+  document.getElementById('onBtn').onclick = function() {
+    console.log("animate on button clicked");
+    animation = true;
+  };
+
+  document.getElementById('offBtn').onclick = function() {
+    console.log("animate off button clicked");
+    animation = false;
+  };
 
   document.getElementById('angleSlide').addEventListener('change', function() {
     console.log("angle slider clicked"); 
     g_globalAngle = this.value; 
     renderAllShapes(); 
-    // console.log("rendered shape after camera angle")
   });
 
   document.getElementById('bodySlide').addEventListener('change', function() {
@@ -113,6 +125,17 @@ function addActionsForHtmlUI() {
     renderAllShapes(); 
   });
 
+  document.getElementById('earSlide').addEventListener('change', function() {
+    console.log("ear slider clicked"); 
+    g_earAngle = this.value; 
+    renderAllShapes(); 
+  });
+
+  document.getElementById('waterSlide').addEventListener('change', function() {
+    console.log("water slider clicked"); 
+    g_earAngle = this.value; 
+    renderAllShapes(); 
+  });
 }
 
 function main() {
@@ -133,10 +156,8 @@ function main() {
 
   // Specify the color for clearing <canvas>
   gl.clearColor(153/255, 210/255, 227/255, 1);
-  // gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-  // Clear <canvas>
-  gl.clear(gl.COLOR_BUFFER_BIT);
+  requestAnimationFrame(tick);  
 }
  
 function click(ev) {
@@ -158,8 +179,31 @@ function click(ev) {
   }
   g_lastX = x;
   g_lastY = y;
-  renderAllShapes();
+  // renderAllShapes();
 }
+
+var g_startTime = performance.now()/1000.0;
+var g_seconds = performance.now()/1000.0 - g_startTime;
+
+function tick() {
+  g_seconds = performance.now()/1000.0 - g_startTime;
+  // console.log(g_seconds);
+
+  updateAnimationAngles();
+  renderAllShapes();
+  requestAnimationFrame(tick);
+}
+
+function updateAnimationAngles(){
+  if(animation == true){
+    console.log("animation is on");
+      g_globalAngle = (360*Math.sin(0.02*g_seconds));
+      g_bodyAngle = (5*Math.sin(3*g_seconds));
+      g_headAngle = (10*Math.sin(g_seconds));
+      g_earAngle = (5*Math.sin(20*g_seconds));
+  }
+}
+
 
 function convertCoordinatesEventToGL(ev){
   var x = ev.clientX; // x coordinate of a mouse pointer
@@ -222,16 +266,25 @@ function drawCapybara(){
   earLeft.color = noseEarsColor;
   earLeft.matrix = head.matrix;
   earLeft.matrix.scale(.1, .1, .1);
-  earLeft.matrix.translate(0, 0, 4.8);
+  earLeft.matrix.translate(.001, .001, 4.4);
+  earLeft.matrix.rotate(-g_earAngle, 0, 1, 0);
   earLeft.render();
+  // cancel out ear left
+  earLeft.matrix.rotate(g_earAngle, 0, 1, 0);
 
   var earRight = new Cube();
   earRight.color = noseEarsColor;
   earRight.matrix = earLeft.matrix;
-  earRight.matrix.translate(3, 0, 0);
+  earRight.matrix.translate(2.98, 0, 0);
+  earRight.matrix.rotate(270, 0, 1, 0);
+  earRight.matrix.translate(0, 0, -1);
+  earRight.matrix.rotate(g_earAngle, 0, 1, 0);
   earRight.render();
   //cancel out ear right
-  earRight.matrix.translate(-3, 0, -4.8);
+  earRight.matrix.rotate(-g_earAngle, 0, 1, 0);
+  earRight.matrix.translate(0, 0, 1);
+  earRight.matrix.rotate(-270, 0, 1, 0);
+  earRight.matrix.translate(-2.98, -0.001, -4.4);
   earRight.matrix.scale(10, 10, 10);
 
   var nose = new Cube();
