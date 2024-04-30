@@ -12,7 +12,7 @@ class Cube {
         u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
 
-        // FRONT SIDE
+    // FRONT SIDE
     // Pass the color of a point to u_FragColor variable
     gl.uniform4f(u_FragColor, rgba[0] *0.55, rgba[1] *0.55, rgba[2]*0.5, rgba[3]);
 

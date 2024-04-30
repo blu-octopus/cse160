@@ -250,8 +250,9 @@ function drawCapybara(){
   let bodyColor = [0.9, 0.7, 0.5, 1.0];
   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
-  let waterColor = [163/255, 220/255, 237/255, 1];
-  let wallColor = [0.5, 0.3, 0.1, 1.0];
+  let waterColor = [163/255, 220/255, 237/255, 0.9];
+  // let wallColor = [0.5, 0.3, 0.1, 1.0];
+  let wallColor = [162/255, 121/255, 85/255, 1.0];
   
   var head = new Cube();
   head.color = bodyColor;
@@ -396,5 +397,22 @@ function drawCapybara(){
   wallBottom.matrix.scale(1.2, 1.2, .1);
   wallBottom.matrix.translate(-.33, -0.33, -8);
   wallBottom.render();
+
+  var rice = new Prism();
+  rice.color = [241/255, 244/255, 251/255, 1.0];
+  rice.matrix.scale(.25, .25, .25);
+  rice.matrix.translate(-1.5, 2, -.3);
+  rice.matrix.rotate(90, 1, 0, 0);
+  rice.matrix.rotate(70, 0, 1, 0);
+  rice.render();
+
+  // add seaweed cube to rice
+  var seaweed = new Cube();
+  seaweed.color = [0.0, 0.5, 0.0, 1.0];
+  seaweed.matrix = rice.matrix;
+
+  seaweed.matrix.scale(.5, .5, .6);
+  seaweed.matrix.translate(.5, 0, -.1);
+  seaweed.render();
 
 }
