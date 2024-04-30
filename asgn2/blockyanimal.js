@@ -154,6 +154,7 @@ function convertCoordinatesEventToGL(ev){
   x = ((x - rect.left) - canvas.width/2)/(canvas.width/2);
   y = (canvas.height/2 - (y - rect.top))/(canvas.height/2);
   return [x,y];
+
 }
 
 function renderAllShapes(){
@@ -208,7 +209,11 @@ function drawCapybara(){
   
   var body = new Cube();
   body.color = bodyColor;
-  body.matrix.translate(0.5, 0.2, 0);
-  body.matrix.scale(.8, 1, .8);
+  // body.matrix.setTranslate(0, 0, 0);
+  // body.matrix.translate(0.6, 0.3, 0.1);
+  // body.matrix.scale(.8, 1, .8);
+  body.matrix.translate(-.4,-.75,0.0);
+  body.matrix.scale(0.3,.3,.5);
+  body.matrix.translate(0,2,0);
   body.render();
 }
