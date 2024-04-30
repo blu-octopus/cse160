@@ -86,6 +86,8 @@ let g_globalAngle = 0;
 let g_bodyAngle = 0;
 let g_headAngle = 0;
 let g_earAngle = 0;
+let g_waterAngle = 0;
+
 let g_lastX = 0;
 let g_lastY = 0;
 let g_x = 0;
@@ -133,7 +135,7 @@ function addActionsForHtmlUI() {
 
   document.getElementById('waterSlide').addEventListener('change', function() {
     console.log("water slider clicked"); 
-    g_earAngle = this.value; 
+    g_waterAngle = this.value; 
     renderAllShapes(); 
   });
 }
@@ -197,13 +199,13 @@ function tick() {
 function updateAnimationAngles(){
   if(animation == true){
     console.log("animation is on");
-      g_globalAngle = (360*Math.sin(0.02*g_seconds));
+      g_globalAngle = (360*Math.sin(0.005*g_seconds));
       g_bodyAngle = (5*Math.sin(3*g_seconds));
       g_headAngle = (10*Math.sin(g_seconds));
       g_earAngle = (5*Math.sin(20*g_seconds));
+      g_waterAngle = (20*Math.sin(g_seconds));
   }
 }
-
 
 function convertCoordinatesEventToGL(ev){
   var x = ev.clientX; // x coordinate of a mouse pointer
@@ -355,11 +357,12 @@ function drawCapybara(){
   // water.matrix.scale(1, 1, .6);
   // water.matrix.translate(-0.3, -0.3, -1.2);
   // water.render();
-  for (var i = 0; i < 10; i++){
+  for (var i = -5; i < 5; i++){
     var water = new Cube();
     water.color = waterColor;
     water.matrix.scale(1, 0.1, .6);
-    water.matrix.translate(-0.3, i + -3, -1.2);
+    // make water angle g_waterAngle add sin wave to make it look like water is moving
+    water.matrix.translate(-0.3, i + 2, -1.2 + (i * g_waterAngle)/2000);
     water.render();
   }
 
