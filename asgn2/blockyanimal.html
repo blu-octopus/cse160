@@ -10,46 +10,41 @@
   </head>
 
   <body onload="main()">
+    <audio autoplay loop>
+        <source src="./src/Minecraft.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>      
     <h1>Assignment 2: Blocky Animal</h1>
 
     <div class="container">
         <div class="item1">
             <div id="webgl-container" style="position: relative;">
-                <!-- <img src="./images/frame.png" alt="frame" id="frame" width="550px" height="550px" style="position: absolute; top: -80px; left: -80px; z-index: -1;"> -->
-                <!-- <img src="./src/frame-left.png" width="28%" style="position: absolute; top: 10px; left: -60px; pointer-events: none;" >
-                <img src="./src/frame-right.png" width="30%" style="position: absolute; top: 0px; left: 375px; pointer-events: none;" >
-                <img src="./src/frame-top.png" width="135%" style="position: absolute; top: -100px; left: -60px; pointer-events: none;" >
-                <img src="./src/frame-bottom.png" width="135%" style="position: absolute; top: 350px; left: -50px; pointer-events: none;" > -->
                 <canvas id="webgl" width="500" height="500" >
                     Please use a browser that supports "canvas"
                 </canvas>
             </div>
         </div>
 
-        <!-- <div class="item"></div> -->
-
         <div class="item">
-            <!-- button type -->
             <div>
-            </div>
-
-            <!-- slider -->
-            <div>
-                <p> Click Canvas to Begin</p>
+                <p> Click Canvas to Begin</p><br>
                 <p id="fps"></p>
                 <p>Camera Angle  <input type="range"min="-90" max="90" value="5" class="slider" id="angleSlide" /></p> 
                 <p>Capybara <input type="range"min="-10" max="20" value="5" class="slider" id="bodySlide" /></p> 
                 <p>Capybara Head<input type="range"min="0" max="50" value="0" class="slider" id="headSlide" /></p> 
                 <p>Capybara Ears<input type="range"min="0" max="40" value="0" class="slider" id="earSlide" /></p> 
                 <p>Water<input type="range"min="-30" max="30" value="0" class="slider" id="waterSlide" /></p> 
+                <br>
                 <p> Animation: 
-                    <button id="onBtn"> On </button> 
-                    <button id="offBtn"> Off </button>
+                    <button id="onBtn" class="mc-button"> On </button> 
+                    <button id="offBtn" class="mc-button"> Off </button>
                 </p>
+                <br>
                 <p> Hold Shift + Click for food. </p>
             </div>
         </div>
     </div>
+
     <script src="./lib/webgl-utils.js" defer></script>
     <script src="./lib/webgl-debug.js" defer></script>
     <script src="./lib/cuon-utils.js" defer></script>
