@@ -205,15 +205,78 @@ function drawCapybara(){
   // eyes color #974C47
   let bodyColor = [0.9, 0.7, 0.5, 1.0];
   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
-  let eyesColor = [0.6, 0.3, 0.3, 1.0];
+  let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
   
+  var head = new Cube();
+  head.color = bodyColor;
+  head.matrix.scale(.4, .6, .5);
+  head.matrix.translate(0,0,0);
+  head.render();
+
+  var ear1 = new Cube();
+  ear1.color = noseEarsColor;
+  ear1.matrix.scale(.1, .1, .1);
+  ear1.matrix.translate(0, 0, 4.8);
+  ear1.render();
+
+  var ear2 = new Cube();
+  ear2.color = noseEarsColor;
+  ear2.matrix.scale(.1, .1, .1);
+  ear2.matrix.translate(3, 0, 4.8);
+  ear2.render();
+
+  var nose = new Cube();
+  nose.color = noseEarsColor;
+  nose.matrix.scale(.4, 0.1, .5);
+  nose.matrix.translate(0, 6, 0);
+  nose.render();
+
+  var eye1 = new Cube();
+  eye1.color = eyeslipsColor;
+  eye1.matrix.scale(.01, .1, .1);
+  eye1.matrix.translate(-1, 2, 3);
+  eye1.render();
+
+  var eye2 = new Cube();
+  eye2.color = eyeslipsColor;
+  eye2.matrix.scale(.01, .1, .1);
+  eye2.matrix.translate(40, 2, 3);
+  eye2.render();
+
+  var lip2 = new Cube();
+  lip2.color = eyeslipsColor;
+  lip2.matrix.scale(.05, .01, .3);
+  lip2.matrix.translate(3.5, 70, 0.2);
+  lip2.render();
+
+  var lip1 = new Cube();
+  lip1.color = eyeslipsColor;
+  lip1.matrix.scale(.3, .01, .05);
+  lip1.matrix.translate(.2, 70, 7);
+  // lip1.matrix.rotate(1, 0, 0, 1);
+  lip1.render();
+
+  // var lip2 = new Cube();
+  // lip2.color = eyeslipsColor;
+  // lip2.matrix.scale(.05, .01, .2);
+  // lip2.matrix.translate(3.5, 70, .8);
+  // lip2.render();
+
+  // var lip1 = new Cube();
+  // lip1.color = eyeslipsColor;
+  // lip1.matrix.rotate(20, .2, 70, 7);
+  // lip1.matrix.scale(.15, .01, .05);
+  // lip1.matrix.translate(-.4, 70, 7);
+  // lip1.render();
+
   var body = new Cube();
   body.color = bodyColor;
-  // body.matrix.setTranslate(0, 0, 0);
-  // body.matrix.translate(0.6, 0.3, 0.1);
-  // body.matrix.scale(.8, 1, .8);
-  body.matrix.translate(-.4,-.75,0.0);
-  body.matrix.scale(0.3,.3,.5);
-  body.matrix.translate(0,2,0);
+  body.matrix.scale(.5, .3, .5);
+  body.matrix.translate(0, -2, 0);
   body.render();
+
+  // var testTriangle = new Triangle3D();
+  // testTriangle.matrix.color = [1.0, 1.0, 1.0, 1.0];
+  // testTriangle.matrix.render();
+  
 }
