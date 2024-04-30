@@ -259,23 +259,10 @@ function drawCapybara(){
   // lip1.matrix.rotate(1, 0, 0, 1);
   lip1.render();
 
-  // var lip2 = new Cube();
-  // lip2.color = eyeslipsColor;
-  // lip2.matrix.scale(.05, .01, .2);
-  // lip2.matrix.translate(3.5, 70, .8);
-  // lip2.render();
-
-  // var lip1 = new Cube();
-  // lip1.color = eyeslipsColor;
-  // lip1.matrix.rotate(20, .2, 70, 7);
-  // lip1.matrix.scale(.15, .01, .05);
-  // lip1.matrix.translate(-.4, 70, 7);
-  // lip1.render();
-
   var body = new Cube();
   body.color = bodyColor;
-  body.matrix.scale(.4, .6, .2);
-  body.matrix.translate(0, -.2, -1);
+  body.matrix.scale(.4, .7, .4);
+  body.matrix.translate(0, -.3, -1);
   body.render();
 
   //add a tub underneath body, which is a blue cube surrounded by 5 brown cubes lining the sides
