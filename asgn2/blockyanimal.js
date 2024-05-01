@@ -35,7 +35,13 @@ function setupWebGL() {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
+
   gl.enable(gl.DEPTH_TEST);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.CONSTANT_COLOR);
+  // gl.blendFunc(gl.SRC_COLOR, gl.DST_COLOR);
+  // gl.getParameter(gl.BLEND_SRC_RGB) === gl.SRC_COLOR;
+
 }
 
 function connectVariablesToGLSL() {
@@ -254,7 +260,7 @@ function drawCapybara(){
   let bodyColor = [0.9, 0.7, 0.5, 1.0];
   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
-  let waterColor = [163/255, 220/255, 237/255, 0.9];
+  let waterColor = [163/255, 220/255, 237/255, 0.5];
   // let wallColor = [0.5, 0.3, 0.1, 1.0];
   let wallColor = [180/255, 115/255, 65/255, 1.0];
   
@@ -368,8 +374,12 @@ function drawCapybara(){
     water.matrix.scale(1, 0.1, .6);
     // make water angle g_waterAngle add sin wave to make it look like water is moving
     water.matrix.translate(-0.3, i + 2, -1.2 + (i * g_waterAngle)/2000);
+    gl.blendFunc(gl.CONSTANT_COLOR, gl.ONE_MINUS_CONSTANT_COLOR);
+    // gl.blendFunc(gl.SRC_ALPHA, gl.SRC_COLOR);
     water.render();
   }
+
+  gl.blendFunc(gl.SRC_ALPHA, gl.CONSTANT_COLOR);
 
   //add walls now
   var wallLeft = new Cube();
