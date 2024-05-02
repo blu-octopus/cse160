@@ -101,6 +101,8 @@ let g_zAngle = 0;
 let dragging = false;
 let animation = false;
 let onigiri = false;
+let orangeClicked = false;
+let orangeCount = 0;
 
 function addActionsForHtmlUI() {
 
@@ -113,6 +115,12 @@ function addActionsForHtmlUI() {
   document.getElementById('offBtn').onclick = function() {
     console.log("animate off button clicked");
     animation = false;
+  };
+
+  document.getElementById('orangeBtn').onclick = function() {
+    console.log("reset orange count to 0");
+    orangeCount = 0;
+    renderAllShapes();
   };
 
   document.getElementById('angleSlide').addEventListener('change', function() {
@@ -144,6 +152,8 @@ function addActionsForHtmlUI() {
     g_waterAngle = this.value; 
     renderAllShapes(); 
   });
+
+  
 }
 
 function main() {
@@ -162,9 +172,12 @@ function main() {
     if (e.shiftKey){
       onigiri = !onigiri;
       animation = true;
+      orangeCount++;
+
     }
   };
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
+
 
   // Specify the color for clearing <canvas>
   gl.clearColor(153/255, 210/255, 227/255, 1);
@@ -419,6 +432,19 @@ function drawCapybara(){
   orange.matrix.translate(0.85, .5, 3 + g_bodyAngle/100*4);
   orange.matrix.rotate(g_headAngle, 0, 0, 1);
   orange.render();
+  //for loop that will generate oranges stacked on top of head
+  // if(orangeClicked == true){
+  //   orangeCount += 1;
+  // }
+  for (var i = 1; i < orangeCount; i++){
+    var orangeS = new Cube();
+    orangeS.color = [1, 0.7, 0.4, 1];
+    orangeS.matrix = orange.matrix;
+    orangeS.matrix.scale(.9, .9, .9);
+    orangeS.matrix.translate(0.025*i, 0.025*i, 0.2*i);
+    orangeS.matrix.rotate(g_headAngle, 0, 0, 1);
+    orangeS.render();
+  }
 
   if(onigiri == true){
     drawOnigiri();
