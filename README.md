@@ -1,22 +1,20 @@
 # cse160
- Assignments in computer graphics class
+Projects for computer graphics class
 
- ## [Assignment 0 ](https://blu-octopus.github.io/cse160/asgn0/asgn0)
+## [Assignment 0 ](https://blu-octopus.github.io/cse160/asgn0/asgn0)
 
 Draw vectors on the canvas based on user input  of x and y coordinates.
 Perform basic arithmetic operations on vectors.
-Coded with extensive help from chat-GPT and co-pilot.
 
 ## [Assignment 1](https://blu-octopus.github.io/cse160/asgn1/asgn1)
 
-Drawing tools on the canvas. Duck themed. 
-Coded with extensive help from chat-GPT and co-pilot.
+Painting program. Duck themed. 
 
 ## [Assignment 5 part a](https://blu-octopus.github.io/cse160/asgn5a/asgn5)
 
-Rendering three.js scene with a rotating cube and a rotating sphere.
+Rendering a three.js scene.
 
 ## [Assignment 2](https://blu-octopus.github.io/cse160/asgn2/blockyanimal)
 
-Blocky animal.
+Blocky capybara using WebGL and matrix elements.
 
