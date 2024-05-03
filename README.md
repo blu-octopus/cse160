@@ -1,6 +1,7 @@
 # cse160
 Projects for computer graphics class
 
+
 ## [Assignment 0 ](https://blu-octopus.github.io/cse160/asgn0/asgn0)
 
 Draw vectors on the canvas based on user input  of x and y coordinates.
