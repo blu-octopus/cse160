@@ -1,8 +1,8 @@
-# Assignment 2
+# Assignment 3
 
 ## Introduction
 
-This assignment has a blocky capy that is animated.
+Creating a Virtual World 
 
 ## How to Run
 
@@ -10,7 +10,7 @@ To run the program, open the `blockyanimal.html` file in a web browser. The prog
 
 ## Files
 
-`asgn2`
+`asgn3`
 - `blockyanimal.html`: The main HTML file that contains the blocky animal and interactive sliders and buttons.
 - `blockyanimal.css`: The main CSS file
 - `blockyanimal.js`: Where all the code is

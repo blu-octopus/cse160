@@ -21,6 +21,7 @@ class Cube {
 
     // BOTTOM SIDE
     gl.uniform4f(u_FragColor, rgba[0] *0.6, rgba[1] *0.6, rgba[2]*0.6, rgba[3]);
+    drawTriangle3DUV( [0.0, 0.0, 0.0,  1.0,0.0,0.0,  1.0,0.0,1.0 ], [0.0, 0.0,  1.0, 0.0,  1.0, 1.0]);
     drawTriangle3D( [0.0, 0.0, 0.0,  1.0,0.0,0.0,  1.0,0.0,1.0 ]);
     drawTriangle3D( [0.0, 0.0, 0.0,  0.0,0.0,1.0,  1.0,0.0,1.0 ]);
 
