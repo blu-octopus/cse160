@@ -1,73 +1,100 @@
-// ColoredPoint.js (c) 2012 matsuda
+// ColoredPoints.js (c) 2012 matsuda
 // Vertex shader program
-var VSHADER_SOURCE = `
+var VSHADER_SOURCE =`
   precision mediump float;
   attribute vec4 a_Position;
   attribute vec2 a_UV;
   varying vec2 v_UV;
-  uniform mat4 u_ModelMatrix;
-  uniform mat4 u_GlobalRotateMatrix;
+	uniform mat4 u_ModelMatrix;
+	uniform mat4 u_GlobalRotateMatrix;
   uniform mat4 u_ViewMatrix;
   uniform mat4 u_ProjectionMatrix;
   void main() {
     gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
     v_UV = a_UV;
   }`
+// passing a_UV (a JS var vector shader) into a varying var v_UV (var for fragment shader)
 
 // Fragment shader program
-var FSHADER_SOURCE =`
+var FSHADER_SOURCE = `
   precision mediump float;
   varying vec2 v_UV;
-  uniform vec4 u_FragColor;
+  uniform vec4 u_FragColor; 
+  uniform sampler2D u_Sampler0;
+  uniform sampler2D u_Sampler1;
+  uniform int u_whichTexture;
   void main() {
-    gl_FragColor = u_FragColor;
-  }`;
+
+    if (u_whichTexture == -2) {
+      gl_FragColor = u_FragColor;                   // Use color
+    }
+
+    else if (u_whichTexture == -1) {
+      gl_FragColor = vec4(v_UV, 1.0, 1.0);          // Use UV debug color
+    }
+
+    else if (u_whichTexture == 0){
+      gl_FragColor = texture2D(u_Sampler0, v_UV);   // Use texture0
+    }
+
+    else if (u_whichTexture == 1) {
+      gl_FragColor = texture2D(u_Sampler1, v_UV);   // Use texture1
+
+    }
+
+    else {
+      gl_FragColor = vec4(1, 0.2, 0.2, 1);          // Error, put Redish debugging color
+    }
+
+  }`
 
 let canvas;
 let gl;
 let a_Position;
 let a_UV;
-let u_FragColor;
+let u_FragColor; 
 let u_Size;
 let u_ModelMatrix;
 let u_ProjectionMatrix;
 let u_ViewMatrix;
 let u_GlobalRotateMatrix;
-// var ducked = false;
+let u_Sampler0;
+let u_Sampler1;
+let u_whichTexture;
 
 function setupWebGL() {
   // Retrieve <canvas> element
   canvas = document.getElementById('webgl');
 
   // Get the rendering context for WebGL
-  gl = canvas.getContext("webgl", {preserveDrawingBuffer: true});
+  // gl = getWebGLContext(canvas); // adding a flag to this
+
+  gl = canvas.getContext("webgl", { preserverDrawingBuffer: true});
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
-
-  gl.enable(gl.DEPTH_TEST);
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.CONSTANT_COLOR);
-  // gl.blendFunc(gl.SRC_COLOR, gl.DST_COLOR);
-  // gl.getParameter(gl.BLEND_SRC_RGB) === gl.SRC_COLOR;
-
 }
 
 function connectVariablesToGLSL() {
+  // all variables that connect ot GLSL:
+
   // Initialize shaders
+  // "this compiles and installs our shader programs"
   if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
     console.log('Failed to intialize shaders.');
     return;
   }
 
-  // Get the storage location of a_Position
+  // // Get the storage location of a_Position
+  // a_Position and u_FragColor sets up the variables that we'll pass in
   a_Position = gl.getAttribLocation(gl.program, 'a_Position');
   if (a_Position < 0) {
     console.log('Failed to get the storage location of a_Position');
     return;
   }
 
+  // Get the storage location of a_Position
   a_UV = gl.getAttribLocation(gl.program, 'a_UV');
   if (a_UV < 0) {
     console.log('Failed to get the storage location of a_UV');
@@ -84,17 +111,51 @@ function connectVariablesToGLSL() {
   // Get the storage location of u_ModelMatrix
   u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
   if (!u_ModelMatrix) {
-    console.log('Failed to get the storage location of u_ModelMatrix');
+    console.log('Failed to get the storage location of u_ModelMatrx');
     return;
   }
 
-  u_GlobalRotateMatrix = gl.getUniformLocation(gl.program, 'u_GlobalRotateMatrix');
-  if(!u_GlobalRotateMatrix) {
-    console.log("failed to get the storage loc of u_GlobalRotateMatrix");
+	// Get the storage location of u_GlobalRotateMatrix
+	u_GlobalRotateMatrix = gl.getUniformLocation(gl.program, 'u_GlobalRotateMatrix');
+	if (!u_GlobalRotateMatrix) {
+    console.log('Failed to get the storage location of u_GlobalRotateMatrix');
     return;
   }
 
-  //set the initial value for the model matrix to the identity matrix
+  // Get the storage location of u_ProjectionMatrix
+  u_ProjectionMatrix = gl.getUniformLocation(gl.program, 'u_ProjectionMatrix');
+  if (!u_ProjectionMatrix) {
+    console.log('Failed to get the storage location of u_ProjectionMatrix');
+    return;
+  }
+  // Get the storage location of u_ViewMatrix
+  u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
+  if (!u_ViewMatrix) {
+    console.log('Failed to get the storage location of u_ViewMatrix');
+    return;
+  }
+
+  // Get the storage location of u_Sampler
+  u_Sampler0 = gl.getUniformLocation(gl.program, 'u_Sampler0');
+  if (!u_Sampler0) {
+    console.log('Failed to get the storage location of u_Sampler0');
+    return false;
+  }
+
+  u_Sampler1 = gl.getUniformLocation(gl.program, 'u_Sampler1');
+  if (!u_Sampler1) {
+    console.log('Failed to get the storage location of u_Sampler1');
+    return false;
+  }
+
+  // Get the storage location of u_whichTexture
+  u_whichTexture = gl.getUniformLocation(gl.program, 'u_whichTexture');
+  if (!u_whichTexture) {
+    console.log('Failed to get the storage location of u_whichTexture');
+    return false;
+  }
+
+  // Set an initial value for this matrix to identity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
 
@@ -141,7 +202,7 @@ function addActionsForHtmlUI() {
 
   document.getElementById('angleSlide').addEventListener('change', function() {
     console.log("angle slider clicked"); 
-    g_globalAngle = this.value; 
+    g_globalAngle = this.value + 180; 
     renderAllShapes(); 
   });
 
@@ -171,6 +232,94 @@ function addActionsForHtmlUI() {
   
 }
 
+function initTextures(){
+  var image = new Image();
+  if(!image){
+    console.log('failed to create image obj');
+    return false;
+  }
+  image.onload = function() {sendImageToTEXTURE0(image) };
+  image.src = "src/fur.avif";
+
+  var imageSky = new Image();
+  if(!imageSky){
+    console.log('failed to create image obj');
+    return false;
+  }
+  imageSky.onload = function() {sendImageToTEXTURE1(imageSky) };
+  imageSky.src = "./src/sky.png";
+
+  var imageApple = new Image();
+  if(!imageApple){
+    console.log('failed to create image obj');
+    return false;
+  }
+  imageApple.onload = function() {sendImageToTEXTURE2(imageApple) };
+  imageApple.src = "./src/sky.png";
+  
+  return true;
+}
+
+function sendTextureToGLSL(n, u_Sampler, image){
+  var texture = gl.createTexture();
+  if(!texture){
+    console.log('failed to create texture obj');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler0, 0);
+  // gl.clear(gl.COLOR_BUFFER_BIT);
+  // gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
+  console.log('texture loaded');
+}
+
+function sendImageToTEXTURE0(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler0, 0);
+  console.log('finished loadTexture');
+}
+function sendImageToTEXTURE1(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler1, 1);
+  console.log('finished loadTexture');
+}
+
+function sendImageToTEXTURE2(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE2);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler2, 2);
+  console.log('finished loadTexture');
+}
 function main() {
 
   setupWebGL();
@@ -192,6 +341,8 @@ function main() {
     }
   };
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
+
+  initTextures();
 
   // Specify the color for clearing <canvas>
   gl.clearColor(153/255, 210/255, 227/255, 1);
@@ -264,6 +415,20 @@ function renderAllShapes(){
   globalRotMat.rotate(g_x, 1, 0 ,0);
   gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
+  // gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
+
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  var projMat = new Matrix4();
+  projMat.setPerspective(50, 1 * canvas.width/canvas.height, 1,100);
+  gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
+
+  var viewMat = new Matrix4();
+  viewMat.setLookAt(0,0,3,0,0,-100,0,1,0);
+  gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
+
+  var globalRotMat= new Matrix4().rotate(g_globalAngle+180,1,1,0);
   gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -293,6 +458,8 @@ function drawCapybara(){
   
   var head = new Cube();
   head.color = bodyColor;
+  head.textureNum = 0;
+  // head.matrix.rotate(90, 0, 0, 1);
   // head.matrix.rotate(g_headAngle, 0, 0, 0);
   head.matrix.scale(.4, .6, .5);
   head.matrix.translate(0, 0, 0 + g_bodyAngle/100);
@@ -398,11 +565,11 @@ function drawCapybara(){
   for (var i = -5; i < 5; i++){
     var water = new Cube();
     water.color = waterColor;
-    water.matrix.scale(1, 0.1, .6);
+    water.matrix.scale(1, 0.1, .5);
     // make water angle g_waterAngle add sin wave to make it look like water is moving
     water.matrix.translate(-0.3, i + 2, -1.2 + (i * g_waterAngle)/2000);
-    gl.blendFunc(gl.CONSTANT_COLOR, gl.ONE_MINUS_CONSTANT_COLOR);
-    // gl.blendFunc(gl.SRC_ALPHA, gl.SRC_COLOR);
+    // gl.blendFunc(gl.CONSTANT_COLOR, gl.ONE_MINUS_CONSTANT_COLOR);
+    gl.blendFunc(gl.SRC_ALPHA, gl.SRC_COLOR);
     water.render();
   }
 
