@@ -6,7 +6,7 @@ class Cube{
         //this.size = 5.0;
         //this.segments = 10;
         this.matrix = new Matrix4();
-        this.textureNum = -1;    
+        this.textureNum = -2;    
         // -2 goes back to original cube colors, -1 sets to debugging colors, 0 sets to the specified texture
     }
 
