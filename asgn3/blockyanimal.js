@@ -23,6 +23,8 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler0;
   uniform sampler2D u_Sampler1;
   uniform sampler2D u_Sampler2;
+  uniform sampler2D u_Sampler3;
+  uniform sampler2D u_Sampler4;
   uniform int u_whichTexture;
   void main() {
     if(u_whichTexture == -2){
@@ -34,7 +36,11 @@ var FSHADER_SOURCE = `
     } else if(u_whichTexture == 1) {
       gl_FragColor = texture2D(u_Sampler1, v_UV); // use texture1
     } else if(u_whichTexture == 2) {
-      gl_FragColor = texture2D(u_Sampler2, v_UV); // use texture1
+      gl_FragColor = texture2D(u_Sampler2, v_UV); // use texture2
+    } else if(u_whichTexture == 3) {
+      gl_FragColor = texture2D(u_Sampler3, v_UV); // use texture3
+    } else if(u_whichTexture == 4) {
+      gl_FragColor = texture2D(u_Sampler4, v_UV); // use texture4
     } else {
       gl_FragColor = vec4(1,.2,.2,1);
     }
@@ -53,6 +59,8 @@ let u_GlobalRotateMatrix;
 let u_Sampler0;
 let u_Sampler1;
 let u_Sampler2;
+let u_Sampler3;
+let u_Sampler4;
 let u_whichTexture;
 
 function setupWebGL() {
@@ -147,6 +155,18 @@ function connectVariablesToGLSL() {
     return false;
   }
 
+  u_Sampler3 = gl.getUniformLocation(gl.program, 'u_Sampler3');
+  if (!u_Sampler3) {
+    console.log('Failed to get the storage location of u_Sampler3');
+    return false;
+  }
+
+  u_Sampler4 = gl.getUniformLocation(gl.program, 'u_Sampler4');
+  if (!u_Sampler4) {
+    console.log('Failed to get the storage location of u_Sampler4');
+    return false;
+  }
+
   // Get the storage location of u_whichTexture
   u_whichTexture = gl.getUniformLocation(gl.program, 'u_whichTexture');
   if (!u_whichTexture) {
@@ -181,48 +201,11 @@ let onigiri = false;
 // let orangeCount = 0;
 
 function addActionsForHtmlUI() {
-
-  // Button to turn animation on and off
-  document.getElementById('onBtn').onclick = function() {
-    console.log("animate on button clicked");
-    animation = true;
-  };
-
-  document.getElementById('offBtn').onclick = function() {
-    console.log("animate off button clicked");
-    animation = false;
-  };
-
-  document.getElementById('angleSlide').addEventListener('change', function() {
-    console.log("angle slider clicked"); 
-    g_globalAngle = this.value + 180; 
-    renderAllShapes(); 
-  });
-
-  document.getElementById('bodySlide').addEventListener('change', function() {
-    console.log("body slider clicked"); 
-    g_bodyAngle = this.value; 
-    renderAllShapes(); 
-  });
-
-  document.getElementById('headSlide').addEventListener('change', function() {
-    console.log("head slider clicked"); 
-    g_headAngle = this.value; 
-    renderAllShapes(); 
-  });
-
-  document.getElementById('earSlide').addEventListener('change', function() {
-    console.log("ear slider clicked"); 
-    g_earAngle = this.value; 
-    renderAllShapes(); 
-  });
-
-  document.getElementById('waterSlide').addEventListener('change', function() {
-    console.log("water slider clicked"); 
-    g_waterAngle = this.value; 
-    renderAllShapes(); 
-  });
-  
+  // document.getElementById('angleSlide').addEventListener('change', function() {
+  //   console.log("angle slider clicked"); 
+  //   g_globalAngle = this.value; 
+  //   renderAllShapes(); 
+  // });
 }
 
 function initTextures(){
@@ -249,6 +232,22 @@ function initTextures(){
   }
   imageSky.onload = function() {sendImageToTEXTURE2(imageSky) };
   imageSky.src = "./src/sky.jpg";
+
+  var imageRice = new Image();
+  if(!imageRice){
+    console.log('failed to create image imageRice');
+    return false;
+  }
+  imageRice.onload = function() {sendImageToTEXTURE3(imageRice) };
+  imageRice.src = "./src/rice.png";
+
+  var imageSWD = new Image();
+  if(!imageSWD){
+    console.log('failed to create image imageSWD');
+    return false;
+  }
+  imageSWD.onload = function() {sendImageToTEXTURE4(imageSWD) };
+  imageSWD.src = "./src/seaweed.jpg";
   
   return true;
 }
@@ -295,6 +294,36 @@ function sendImageToTEXTURE2(image) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
   gl.uniform1i(u_Sampler2, 2);
+  console.log('finished loadTexture');
+}
+
+function sendImageToTEXTURE3(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE3);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler3, 3);
+  console.log('finished loadTexture');
+}
+
+function sendImageToTEXTURE4(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE4);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler4, 4);
   console.log('finished loadTexture');
 }
 
@@ -361,14 +390,6 @@ function tick() {
 }
 
 function updateAnimationAngles(){
-  if(animation == true){
-    console.log("animation is on");
-      g_globalAngle = (360*Math.sin(0.005*g_seconds));
-      g_bodyAngle = (5*Math.sin(3*g_seconds));
-      g_headAngle = (10*Math.sin(g_seconds));
-      g_earAngle = (5*Math.sin(20*g_seconds));
-      g_waterAngle = (20*Math.sin(g_seconds));
-  }
 }
 
 function convertCoordinatesEventToGL(ev){
@@ -468,19 +489,21 @@ function sendTextToHTML(text) {
 
 drawOnigiri = function(){ 
 
+  // gl.enable(gl.BLEND);
+  // gl.blendFunc(gl.SRC_ALPHA_SATURATE, gl.SRC_ALPHA_SATURATE);
+  
   var rice = new Prism();
   rice.color = [241/255, 244/255, 251/255, 1.0];
-  // rice.textureNum = 2;
-  rice.matrix.translate(1, 0.5, 1);
+  rice.textureNum = 3;
+  rice.matrix.translate(1, 0.5, 2);
   rice.render();
 
-  // add seaweed cube to rice
   var seaweed = new Cube();
   seaweed.color = [0.0, 0.5, 0.0, 1.0];
-  seaweed.textureNum = 0;
+  seaweed.textureNum = -2;
   seaweed.matrix = rice.matrix;
-  seaweed.matrix.scale(.5, .5, .6);
-  seaweed.matrix.translate(.5, 0, -.1);
+  seaweed.matrix.scale(.5, .5, 0);
+  seaweed.matrix.translate(.1, -.8, 0);
   seaweed.render();
 }
 
