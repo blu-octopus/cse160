@@ -455,7 +455,6 @@ function renderAllShapes() {
   floor.matrix.scale(5, 0, 5);
   floor.render();
 
-  // drawCapybara();
   drawOnigiri();
 
   var duration = performance.now() - startTime;
@@ -467,205 +466,18 @@ function sendTextToHTML(text) {
   htmlElem.innerHTML = text;
 }
 
-//draw a duck function using cubes
-function drawDuck(){
-  // Create a new matrix for the entire duck transformation
-  var duckTransform = new Matrix4();
-  duckTransform.rotate(0, 0, 0, 0);
-  duckTransform.translate(0, 0, 0); 
-
-  // duck is a bird that is cute
-  // body color #E6AF88, beak color #C38175, eyes color #974C47
-  let bodyColor = [0.9, 0.7, 0.5, 1.0];
-  let beakColor = [0.8, 0.5, 0.5, 1.0];
-  let eyesColor = [0.6, 0.3, 0.3, 1.0];
-
-  var head = new Cube();
-  head.color = bodyColor;
-  head.matrix = new Matrix4(duckTransform);
-  head.matrix.scale(.4, .6, .5);
-  head.matrix.translate(0, 0, 0);
-  head.render();
-
-  var beak = new Cube();
-  beak.color = beakColor;
-  beak.matrix = new Matrix4(duckTransform);
-  beak.matrix.scale(.1, .1, .1);
-  beak.matrix.translate(.001, .001, 4.4);
-  beak.render();
-
-  var eye1 = new Cube();
-  eye1.color = eyesColor;
-  eye1.matrix = new Matrix4(duckTransform);
-  eye1.matrix.scale(.01, .1, .1);
-  eye1.matrix.translate(-1, 2, 3);
-  eye1.render();
-
-  var eye2 = new Cube();
-  eye2.color = eyesColor;
-  eye2.matrix = new Matrix4(duckTransform);
-  eye2.matrix.translate(40, 2, 3);
-  eye2.render();
-
-}
-
-
-// function drawCapybara(){
-//   // Create a new matrix for the entire capybara transformation
-//   var capybaraTransform = new Matrix4();
-//   // capybaraTransform.rotate(-90, 1, 0, 0);
-//   // capybaraTransform.translate(1, -1, 0); 
-
-//   var bodyTransform = new Matrix4();
-//   // bodyTransform.rotate(90, 1, 0, 0);
-//   // bodyTransform.translate(1, 1, 0);
-
-//   // capybara is a square looking rodent that is very cute
-//   // body color #E6AF88, nose and ears color #C38175, eyes color #974C47
-//   let bodyColor = [0.9, 0.7, 0.5, 1.0];
-//   let noseEarsColor = [0.8, 0.5, 0.5, 1.0];
-//   let eyeslipsColor = [0.6, 0.3, 0.3, 1.0];
-//   let waterColor = [163/255, 220/255, 237/255, 0.5];
-//   let wallColor = [180/255, 115/255, 65/255, 1.0];
-
-//   var head = new Cube();
-//   head.color = bodyColor;
-//   // head.textureNum = -1;
-//   head.matrix = new Matrix4(capybaraTransform);
-//   head.matrix.scale(.4, .6, .5);
-//   head.matrix.translate(0, 0, 0 + g_bodyAngle/100);
-//   head.matrix.rotate(g_headAngle, 0, 0, 1);
-//   head.render();
-
-//   var earLeft = new Cube();
-//   earLeft.color = noseEarsColor;
-//   earLeft.matrix = new Matrix4(head.matrix);
-//   earLeft.matrix.scale(.1, .1, .1);
-//   earLeft.matrix.translate(.001, .001, 4.4);
-//   earLeft.matrix.rotate(-g_earAngle, 0, 1, 0);
-//   earLeft.render();
-
-//   var earRight = new Cube();
-//   earRight.color = noseEarsColor;
-//   earRight.matrix = new Matrix4(earLeft.matrix);
-//   earRight.matrix.translate(2.98, 0, 0);
-//   earRight.matrix.rotate(270, 0, 1, 0);
-//   earRight.matrix.translate(0, 0, -1);
-//   earRight.matrix.rotate(g_earAngle, 0, 1, 0);
-//   earRight.render();
-
-//   var nose = new Cube();
-//   nose.color = noseEarsColor;
-//   nose.matrix = new Matrix4(head.matrix);
-//   nose.matrix.scale(.4, 0.1, .5);
-//   nose.matrix.translate(0, 6, 0);
-//   nose.render();
-
-//   var eye1 = new Cube();
-//   eye1.color = eyeslipsColor;
-//   eye1.matrix = new Matrix4(head.matrix);
-//   eye1.matrix.scale(.01, .1, .1);
-//   eye1.matrix.translate(-1, 2, 3);
-//   eye1.render();
-
-//   var eye2 = new Cube();
-//   eye2.color = eyeslipsColor;
-//   eye2.matrix = new Matrix4(head.matrix);
-//   eye2.matrix.translate(40, 2, 3);
-//   eye2.render();
-
-//   var lip2 = new Cube();
-//   lip2.color = eyeslipsColor;
-//   lip2.matrix = new Matrix4(head.matrix);
-//   lip2.matrix.scale(.05, .01, .3);
-//   lip2.matrix.translate(3.5, 70, 0.2);
-//   lip2.render();
-
-//   var lip1 = new Cube();
-//   lip1.color = eyeslipsColor;
-//   lip1.matrix = new Matrix4(head.matrix);
-//   lip1.matrix.scale(.3, .01, .05);
-//   lip1.matrix.translate(.2, 70, 7);
-//   lip1.render();
-
-//   var body = new Cube();
-//   body.color = bodyColor;
-//   body.matrix = new Matrix4(bodyTransform);
-//   body.matrix.scale(.4, .7, .4);
-//   body.matrix.translate(0, -.3, -0.99 + g_bodyAngle/100);
-//   body.render();
-
-//   for (var i = -5; i < 5; i++){
-//     var water = new Cube();
-//     water.color = waterColor;
-//     water.matrix = new Matrix4(bodyTransform);
-//     water.matrix.scale(1, 0.1, .5);
-//     water.matrix.translate(-0.3, i + 2, -1.2 + (i * g_waterAngle)/2000);
-//     // gl.blendFunc(gl.SRC_ALPHA, gl.SRC_COLOR);
-//     water.render();
-//   }
-
-  // gl.blendFunc(gl.SRC_ALPHA, gl.CONSTANT_COLOR);
-
-//   var wallLeft = new Cube();
-//   wallLeft.color = wallColor;
-//   wallLeft.matrix = new Matrix4(bodyTransform);
-//   wallLeft.matrix.scale(.1, 1, .7);
-//   wallLeft.matrix.translate(-3.96, -0.3, -1.1);
-//   wallLeft.render();
-
-//   var wallRight = new Cube();
-//   wallRight.color = wallColor;
-//   wallRight.matrix = new Matrix4(bodyTransform);
-//   wallRight.matrix.scale(.1, 1, .7);
-//   wallRight.matrix.translate(7.05, -0.3, -1.1);
-//   wallRight.render();
-
-//   var wallBack = new Cube();
-//   wallBack.color = wallColor;
-//   wallBack.matrix = new Matrix4(bodyTransform);
-//   wallBack.matrix.scale(1.2, .1, .7);
-//   wallBack.matrix.translate(-.33, -4, -1.1);
-//   wallBack.render();
-
-//   var wallFront = new Cube();
-//   wallFront.color = wallColor;
-//   wallFront.matrix = new Matrix4(bodyTransform);
-//   wallFront.matrix.scale(1.2, .1, .7);
-//   wallFront.matrix.translate(-.33, 7, -1.1);
-//   wallFront.render();
-  
-//   // orange on head
-//   // var orange = new Cube();
-//   // orange.color = [1, 0.7, 0.4, 1];
-//   // orange.matrix.scale(.15, .15, .15);
-//   // orange.matrix.translate(0.85, .5, 3 + g_bodyAngle/100*4);
-//   // orange.matrix.rotate(g_headAngle, 0, 0, 1);
-//   // orange.render();
-
-//   if(onigiri == true){
-//     drawOnigiri();
-//   }
-
-// }
-
 drawOnigiri = function(){ 
-  // Create a new matrix for the entire onigiri transformation
-  var onigiriTransform = new Matrix4();
-  // onigiriTransform.matrix.scale(2, 2, 2);
 
-  var rice = new Prism(onigiriTransform);
+  var rice = new Prism();
   rice.color = [241/255, 244/255, 251/255, 1.0];
-  rice.textureNum = -1;
-  rice.matrix.scale(.25, .25, .25);
-  rice.matrix.translate(-1.5, 2, -.3);
-  rice.matrix.rotate(90, 1, 0, 0);
-  rice.matrix.rotate(70, 0, 1, 0);
+  // rice.textureNum = 2;
+  rice.matrix.translate(1, 0.5, 1);
   rice.render();
 
   // add seaweed cube to rice
-  var seaweed = new Cube(onigiriTransform);
+  var seaweed = new Cube();
   seaweed.color = [0.0, 0.5, 0.0, 1.0];
+  seaweed.textureNum = 0;
   seaweed.matrix = rice.matrix;
   seaweed.matrix.scale(.5, .5, .6);
   seaweed.matrix.translate(.5, 0, -.1);
