@@ -198,16 +198,6 @@ let g_zAngle = 0;
 let dragging = false;
 let animation = false;
 let onigiri = false;
-// let orangeClicked = false;
-// let orangeCount = 0;
-
-function addActionsForHtmlUI() {
-  // document.getElementById('angleSlide').addEventListener('change', function() {
-  //   console.log("angle slider clicked"); 
-  //   g_globalAngle = this.value; 
-  //   renderAllShapes(); 
-  // });
-}
 
 function initTextures(){
   var image = new Image();
@@ -328,33 +318,13 @@ function sendImageToTEXTURE4(image) {
   console.log('finished loadTexture');
 }
 
-function keydown(ev)
-{
-  if (ev.keyCode == 68) // D --- move right
-    GlobalCamera.right();
-  if (ev.keyCode == 65) // A --- move left
-    GlobalCamera.left();
-  if (ev.keyCode == 87) // W --- move forward
-    GlobalCamera.forward();
-  if (ev.keyCode == 83)
-    GlobalCamera.back();
-  if (ev.keyCode == 69)
-    GlobalCamera.rotateRight();
-  if (ev.keyCode == 81)
-    GlobalCamera.rotateLeft();
-  if (ev.keyCode == 82)
-    GlobalCamera.flyUp();
-  if (ev.keyCode == 70)
-    GlobalCamera.flyDown();
-}
-
 function main() {
 
   setupWebGL();
   connectVariablesToGLSL();
-  addActionsForHtmlUI();
-  GlobalCamera = new Camera();
-
+  // addActionsForHtmlUI();
+  
+  GlobalCamera = new Camera()
   document.onkeydown = keydown;
 
   initTextures();
@@ -362,20 +332,21 @@ function main() {
   // Specify the color for clearing <canvas>
   gl.clearColor(153/255, 210/255, 227/255, 1);
 
-  // requestAnimationFrame(tick);  
+  requestAnimationFrame(tick);  
 }
+ 
 
 var g_startTime = performance.now()/1000.0;
 var g_seconds = performance.now()/1000.0 - g_startTime;
 
-// function tick() {
-//   g_seconds = performance.now()/1000.0 - g_startTime;
-//   // console.log(g_seconds);
+function tick() {
+  g_seconds = performance.now()/1000.0 - g_startTime;
+  // console.log(g_seconds);
 
-//   updateAnimationAngles();
-//   renderAllShapes();
-//   requestAnimationFrame(tick);
-// }
+  updateAnimationAngles();
+  renderAllShapes();
+  requestAnimationFrame(tick);
+}
 
 function updateAnimationAngles(){
 }
@@ -430,9 +401,10 @@ function renderAllShapes() {
 
   // Create the projection matrix
   var projMat = new Matrix4();
-  projMat.setPerspective(50, 1 * canvas.width/canvas.height, .1, 200)
+  projMat.setPerspective(50, canvas.width / canvas.height, 1, 100);
   gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
+  // Create the view matrix for a new camera perspective
   var viewMat = new Matrix4()
   viewMat.setLookAt(
     GlobalCamera.eye.elements[0],GlobalCamera.eye.elements[1],GlobalCamera.eye.elements[2],  
@@ -440,9 +412,11 @@ function renderAllShapes() {
     GlobalCamera.up.elements[0],GlobalCamera.up.elements[1],GlobalCamera.up.elements[2]);
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
-  var globalRotMat = new Matrix4().rotate(GlobalAngle,0,1,0)
-  gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements)
+  // Set the global rotation matrix
+  var globalRotMat = new Matrix4().rotate(g_globalAngle, 0, 1, 0);
+  gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
+  // Clear the canvas
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -462,13 +436,32 @@ function renderAllShapes() {
   floor.textureNum = 1;
   floor.matrix.scale(5, 0, 5);
   floor.render();
-  
+
   drawOnigiri();
 
   var duration = performance.now() - startTime;
   sendTextToHTML("ms: " + Math.floor(duration) + " fps: " + Math.floor(1000 / duration));
 }
 
+function keydown(ev)
+{
+  if (ev.keyCode == 68) // D --- move right
+    GlobalCamera.right();
+  if (ev.keyCode == 65) // A --- move left
+    GlobalCamera.left();
+  if (ev.keyCode == 87) // W --- move forward
+    GlobalCamera.forward();
+  if (ev.keyCode == 83)
+    GlobalCamera.back();
+  if (ev.keyCode == 69)
+    GlobalCamera.rotateRight();
+  if (ev.keyCode == 81)
+    GlobalCamera.rotateLeft();
+  if (ev.keyCode == 82)
+    GlobalCamera.flyUp();
+  if (ev.keyCode == 70)
+    GlobalCamera.flyDown();
+}
 function sendTextToHTML(text) {
   var htmlElem = document.querySelector('#fps');
   htmlElem.innerHTML = text;
