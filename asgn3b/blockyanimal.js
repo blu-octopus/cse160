@@ -210,7 +210,7 @@ function initTextures(){
     return false;
   }
   image.onload = function() {sendImageToTEXTURE0(image) };
-  image.src = "src/palmleaf.jpg";
+  image.src = "src/wood.jpg";
 
   var imageSky = new Image();
   if(!imageSky){
@@ -226,7 +226,7 @@ function initTextures(){
     return false;
   }
   imageLeaf.onload = function() {sendImageToTEXTURE2(imageLeaf) };
-  imageLeaf.src = "src/seaweed.jpg";
+  imageLeaf.src = "src/seaweed (1).jpg";
 
   var imageLog = new Image();
   if(!imageLog){
@@ -393,102 +393,105 @@ var g_up=[0,1,0];
 var g_map = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // this tree is next to snorlax 
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // north
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,3,0,0,0,1],
+  [1,0,0,4,0,0,0,4,0,0,0,0,4,0,0,0,4,0,0,0,4,0,0,0,4,0,0,0,4,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,4,0,0,0,4,0,0,0,0,4,0,0,0,4,0,0,0,4,0,0,0,4,0,0,0,4,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,4,0,0,0,4,0,0,0,4,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,0,3,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,3,0,0,0,1],
+  [1,0,0,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,0,3,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,0,3,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,0,2,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,0,2,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,0,2,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,3,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-];
 
-                    // left
+];
 
 function drawMap() {
   for(x=0;x<=32;x++) {
+    let rand = Math.random() * 0.02;
     for(y=0;y<=32;y++) {
       // console.log(x,y);
       if(g_map[x][y] == 1) {
-        var shrubs = new Cube();
-        shrubs.color = [0,1,0,0.5];
-        shrubs.textureNum = 0;
-        shrubs.matrix.translate(0,-0.75,0);
-        shrubs.matrix.translate(x-8,0,y-8);
-        shrubs.render();
+        var plateBorder = new Cube();
+        plateBorder.color = [0,1,0,0.5];
+        plateBorder.textureNum = 0;
+        plateBorder.matrix.translate(0,-0.75,0);
+        plateBorder.matrix.translate(x-8,0,y-8);
+        plateBorder.render();
       }
       if(g_map[x][y] == 2) {
-        var trunk = new Cube();
-        trunk.color = [0,1,0,0.5];
-        trunk.textureNum = 3;
-        trunk.matrix.translate(0,-0.75,0);
-        trunk.matrix.translate(x-8,0,y-8);
-        trunk.render();
-        var trunk2 = new Cube();
-        trunk2.color = [0,1,0,0.5];
-        trunk2.textureNum = 3;
-        trunk2.matrix.translate(0,0.25,0);
-        trunk2.matrix.translate(x-8,0,y-8);
-        trunk2.render();
-        var leaves = new Cube();
-        leaves.color = [0,1,0,0.5];
-        leaves.textureNum = 2;
-        leaves.matrix.translate(-1,1.25,-1);
-        leaves.matrix.translate(x-8,0,y-8);
-        leaves.matrix.scale(3,3,3);
-        leaves.render();
+        // make salmon nigiri, a flat piece of pink salmon on top of rice
+        riceNigiri = new Cube();
+        riceNigiri.color = [1.0,1.0,1.0,1.0];
+        riceNigiri.textureNum = 3;
+        riceNigiri.matrix.translate(0,-0.75,0);
+        riceNigiri.matrix.translate(x-8,0,y-8);
+        // riceNigiri.matrix.rotate(2*rand,0,1,0);
+        riceNigiri.matrix.scale(1.6, .7, 1);
+        riceNigiri.render();
+        salmonNigiri = new Cube();
+        // salmon color is salmon pink
+        salmonNigiri.color = [250/255,128/255,114/255,1.0];
+        salmonNigiri.matrix.translate(-0.2 + rand * 0.02,-0.3,-.05 + rand);
+        salmonNigiri.matrix.translate(x-8,0.25,y-8)
+        salmonNigiri.matrix.scale(2, 0.2, 1.1);
+        salmonNigiri.render();
       }
       if(g_map[x][y] == 3){
-        var groundApple = new Cube();
-        groundApple.color = [255/255,0/255,0/255,1.0];
-        groundApple.matrix.translate(0,-0.75,0);
-        groundApple.matrix.translate(x-8,0,y-8);
-        groundApple.matrix.scale(0.5,0.5,0.5);
-        groundApple.render();
-        var gAStem = new Cube();
-        var gAStemColor = [165/255,42/255,42/255,1.0];
-        gAStem.matrix = new Matrix4(groundApple.matrix);
-        gAStem.matrix.rotate(0,0,0,1);
-        gAStem.matrix.scale(.25,.5,.25);
-        gAStem.matrix.translate(1.5,2,1.25);
-        gAStem.color = gAStemColor;
-        gAStem.render();
-        var gALeaf = new Cone();
-        var gaLeafColor = [0/255,255/255,0/255,1.0];
-        gALeaf.matrix = new Matrix4(gAStem.matrix);
-        gALeaf.matrix.scale(5,5,5);
-        gALeaf.matrix.translate(0.4,0.08,0.1);
-        gALeaf.matrix.rotate(270,0,1,0);
-        gALeaf.color = gaLeafColor;
-        gALeaf.render();
-        }
-        if(g_map[x][y] == 4) {
-          var repeatedOnigiri = new Onigiri(x,y);
-          repeatedOnigiri.render();
-        }
+        // make a tuna nigiri here
+        riceNigiri = new Cube();
+        riceNigiri.color = [1.0,1.0,1.0,1.0];
+        riceNigiri.textureNum = 3;
+        riceNigiri.matrix.translate(0,-0.75,0);
+        riceNigiri.matrix.translate(x-8,0,y-8);
+        riceNigiri.matrix.scale(1.6, .7, 1);
+        riceNigiri.render();
+        tunaNigiri = new Cube();
+        // tuna color is red
+        tunaNigiri.color = [1.0,0.0,0.0,1.0];
+        tunaNigiri.matrix.translate(-0.2 + rand * 0.02,-0.3,-.05 + rand);
+        tunaNigiri.matrix.translate(x-8,0.25,y-8)
+        tunaNigiri.matrix.scale(2, 0.2, 1.1);
+        tunaNigiri.render();
+      }
+      if(g_map[x][y] == 4) {
+        var rice = new Prism();
+        rice.color = [241/255, 244/255, 251/255, 1.0];
+        rice.textureNum = 3;
+        rice.matrix.translate(0, -.7, 0);
+        rice.matrix.translate(x-8,0,y-8);
+        rice.matrix.scale(2, 2, 2);
+        rice.render();
+      
+        var seaweed = new Cube();
+        seaweed.color = [0.0, 0.5, 0.0, 1.0];
+        seaweed.textureNum = 2;
+        seaweed.matrix = rice.matrix;
+        seaweed.matrix.scale(.5, .4, .6);
+        seaweed.matrix.translate(.45, 0, -.1);
+        seaweed.render();
+      }
       }
     }
 }
@@ -551,7 +554,6 @@ function renderAllShapes(){
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   drawMap();
-
   drawOnigiri();
   // draw floor 
 
@@ -587,14 +589,11 @@ function sendTextToHTML(text,htmlID){
 }
 
 drawOnigiri = function(){ 
-
-  // gl.enable(gl.BLEND);
-  // gl.blendFunc(gl.SRC_ALPHA_SATURATE, gl.SRC_ALPHA_SATURATE);
-  
   var rice = new Prism();
   rice.color = [241/255, 244/255, 251/255, 1.0];
   rice.textureNum = 3;
-  // rice.matrix.translate(1, 0, 2);
+  rice.matrix.translate(-1, -.7, 2);
+  rice.matrix.scale(2, 2, 2);
   rice.render();
 
   var seaweed = new Cube();
