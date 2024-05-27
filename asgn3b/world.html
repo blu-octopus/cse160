@@ -11,6 +11,10 @@
 
   <body onload="main()">
     <h1>Assignment 3B: Creating a Virtual World</h1>
+    <audio autoplay loop>
+        <source src="src/restaurant.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>  
 
     <div class="container">
         <div class="item1">
@@ -19,7 +23,6 @@
                     Please use a browser that supports "canvas"
                 </canvas>
             </div>
-            <audio id="ambientSound" src="src/restaurant.mp3" preload="auto"></audio>
         </div>
 
         <div class="item">
@@ -40,6 +43,7 @@
                 <p> Dear grader I found this assignment to be very challenging. 
                     I notice that simply having static objects in a scene makes it look really fake and dead.
                     So I added slight movements to my cube objects to make them look more alive.
+                    Restaurant does have ambient noise your browser might block the audio from playing though.
                     <br>
                     <br>
                     I tried implementing a system where that you can click on a sushi and it will disappear,
@@ -55,7 +59,7 @@
     <script src="./lib/webgl-debug.js" defer></script>
     <script src="./lib/cuon-utils.js" defer></script>
     <script src="./lib/cuon-matrix.js" defer></script>
-    <script src="./blockyanimal.js" defer></script>
+    <script src="./world.js" defer></script>
     <script src="point.js"></script>
     <script src="triangle.js"></script>
     <script src="circle.js"></script>
