@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sushi Platter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="blockyanimal.css">
+  </head>
+
+  <body onload="main()">
+    <h1>Assignment 4: </h1>
+    <!-- <audio autoplay loop>
+        <source src="src/restaurant.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>   -->
+
+    <div class="container">
+        <div class="item1">
+            <div id="webgl-container" style="position: relative;">
+                <canvas id="webgl" width="500" height="500" >
+                    Please use a browser that supports "canvas"
+                </canvas>
+            </div>
+        </div>
+
+        <div class="item">
+            <div>
+                <p><b><u>Animation</u></b></p>
+                <br>
+                <button type="button" id="normalOn">Normal On</button>
+                <button type="button" id="normalOff">Normal Off</button>
+                <br> 
+                <p>
+                  Light X <input type="range" min="-250" max="250" value="0" class="slider" id="lightSlideX">
+                  Light Y <input type="range" min="-250" max="250" value="100" class="slider" id="lightSlideY">
+                  Light Z <input type="range" min="-250" max="250" value="-200" class="slider" id="lightSlideZ">
+                  <button type="button" id="lightOnButton">light On</button>
+                  <button type="button" id="lightOffButton">light Off</button>
+                <p>
+                <br>
+                <p><b><u>Controls</u></b> </p>
+                <p id="fps"></p>    <p id="numdot"> XXX </p>
+
+                <p> Use WASD to move around, QE to turn left and right.</p>
+                <p> Use mouse to click and drag around the world.</p>
+                <br>
+                
+                <p><b><u>Plate of Sushi</u></b> </p>
+                <p> 
+                    Here I present to you a plate of sushi, with <i>luscious tuna, vibrant salmon,</i> 
+                    and <i>perfectly salted onigiri</i>. 
+                    Together, they offering a taste of harmony and ancient sea magic in every bite.
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./lib/webgl-utils.js" defer></script>
+    <script src="./lib/webgl-debug.js" defer></script>
+    <script src="./lib/cuon-utils.js" defer></script>
+    <script src="./lib/cuon-matrix.js" defer></script>
+    <script src="./world.js" defer></script>
+    <script src="point.js"></script>
+    <script src="triangle.js"></script>
+    <script src="circle.js"></script>
+    <script src="cube.js"></script>
+    <script src="prism.js"></script>
+    <script src="cone.js"></script>
+    <script src="sphere.js"></script>
+    <script src="camera.js"></script>
+    <script src="map.js"></script>
+  </body>
+</html>
