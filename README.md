@@ -19,3 +19,11 @@ Rendering a three.js scene.
 
 Blocky capybara using WebGL and matrix elements.
 
+
+## [Assignment3](https://blu-octopus.github.io/cse160/asgn3b/world)
+
+Sushi Platter with camera and movement.
+
+## [Assignment4](https://blu-octopus.github.io/cse160/asgn4/world)
+
+Sushi Platter with camera and movement lightning.
