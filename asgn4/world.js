@@ -1,4 +1,4 @@
-// ColoredPoint.js (c) 2012 matsuda
+// ColoredPoints.js
 // Vertex shader program
 var VSHADER_SOURCE = `
   precision mediump float;
@@ -16,10 +16,10 @@ var VSHADER_SOURCE = `
   void main() {
     gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
     v_UV = a_UV;
-    v_Normal = normalize(vec3(u_NormalMatrix * vec4(a_Normal,1)));
-    // v_Normal = a_Normal;
+    v_Normal = normalize(vec3(u_NormalMatrix * vec4(a_Normal, 1.0)));
     v_VertPos = u_ModelMatrix * a_Position;
-  }`
+  }`;
+
 
 // Fragment shader program
 var FSHADER_SOURCE = `
@@ -42,63 +42,70 @@ var FSHADER_SOURCE = `
   uniform float lightInnerCutoff; // cos angle
   uniform float lightOuterCutoff;
   uniform vec3 u_spotLightPos;
-
+  uniform vec3 u_lightColor; 
   void main() {
-    if(u_whichTexture == -3){
-      gl_FragColor = vec4(v_Normal + 1.0/2.0, 1.0); // use normal debug
-    } else if(u_whichTexture == -2){
-      gl_FragColor = u_FragColor; // use color
-    } else if(u_whichTexture == -1) {
-      gl_FragColor = vec4(v_UV,1.0,1.0); // use uv debug color
-    } else if(u_whichTexture == 0) {
-      gl_FragColor = texture2D(u_Sampler0, v_UV); // use texture0
-    } else if(u_whichTexture == 1) {
-      gl_FragColor = texture2D(u_Sampler1, v_UV); // use texture1
-    } else if(u_whichTexture == 2) {
-      gl_FragColor = texture2D(u_Sampler2, v_UV); // use texture2
-    } else if(u_whichTexture == 3) {
-      gl_FragColor = texture2D(u_Sampler3, v_UV); // use texture3
-    } else if(u_whichTexture == 4) {
-      gl_FragColor = texture2D(u_Sampler4, v_UV); // use texture4
+    if (u_whichTexture == -3) {
+      gl_FragColor = vec4(v_Normal + 1.0 / 2.0, 1.0);
+    } else if (u_whichTexture == -2) {
+      gl_FragColor = u_FragColor;
+    } else if (u_whichTexture == -1) {
+      gl_FragColor = vec4(v_UV, 1.0, 1.0);
+    } else if (u_whichTexture == 0) {
+      gl_FragColor = texture2D(u_Sampler0, v_UV);
+    } else if (u_whichTexture == 1) {
+      gl_FragColor = texture2D(u_Sampler1, v_UV);
+    } else if (u_whichTexture == 2) {
+      gl_FragColor = texture2D(u_Sampler2, v_UV);
+    } else if (u_whichTexture == 3) {
+      gl_FragColor = texture2D(u_Sampler3, v_UV);
     } else {
-      gl_FragColor = vec4(1,.2,.2,1);
+      gl_FragColor = vec4(1, 0.2, 0.2, 1);
     }
 
-    vec3 lightVector = u_lightPos-vec3(v_VertPos);
+    vec3 lightVector = u_lightPos - vec3(v_VertPos);
     float r = length(lightVector);
 
     // N dot L 
     vec3 L = normalize(lightVector);
     vec3 N = normalize(v_Normal);
-    float nDotL = max(dot(N,L), 0.0);
+    float nDotL = max(dot(N, L), 0.0);
 
     // reflection 
-    vec3 R = reflect(-L,N);
+    vec3 R = reflect(-L, N);
 
     // eye 
-    vec3 E = normalize(u_cameraPos-vec3(v_VertPos));
+    vec3 E = normalize(u_cameraPos - vec3(v_VertPos));
 
     // specular 
-    float specular = pow(max(dot(E,R), 0.0), 64.0) * 0.8;
+    float specular = pow(max(dot(E, R), 0.0), 64.0) * 0.8;
 
-    vec3 diffuse = vec3(gl_FragColor) * nDotL *0.7;
+    vec3 diffuse = vec3(gl_FragColor) * nDotL * 0.7;
     vec3 ambient = vec3(gl_FragColor) * 0.3;
 
-    vec3 spotLightdirection = vec3(0,-1,0);
+    vec3 spotLightdirection = vec3(0, -1, 0);
     vec3 spotLight = normalize(u_spotLightPos - vec3(v_VertPos));
     vec3 lightToPointDirection = -spotLight;
     vec3 spotLightdiffuse = max(0.0, dot(spotLight, normalize(v_Normal))) * vec3(gl_FragColor) * vec3(1.0, 0.0, 1.0);
     float angleToSurface = dot(lightToPointDirection, spotLightdirection);
     float cos = smoothstep(0.0, 20.0, angleToSurface);
     diffuse += spotLightdiffuse;
-    if(u_lightOn) {
-      if(u_whichTexture ==  0) {
+    if (u_lightOn) {
+      if (u_whichTexture == 0) {
+        gl_FragColor = vec4(diffuse + ambient, 1.0);
+      } else {
+        gl_FragColor = vec4(specular * u_lightColor + diffuse * u_lightColor + ambient, 1.0);
+      }
+    }
+
+    if (u_lightOn) {
+      if (u_whichTexture == 0) {
         gl_FragColor = vec4(specular + diffuse + ambient, 1.0);
       } else {
         gl_FragColor = vec4(diffuse + ambient, 1.0);
       }
     }
-  }`
+  }`;
+
 
 // global variables
 let canvas;
@@ -112,15 +119,19 @@ let u_Size;
 let u_ModelMatrix;
 let u_ProjectionMatrix;
 let u_ViewMatrix;
+let u_NormalMatrix;
+
 let u_GlobalRotateMatrix;
 let u_Sampler0;
 let u_Sampler1;
 let u_Sampler2;
+let u_Sampler3;
 let camera;
 let u_cameraPos;
 let u_lightPos;
 let u_lightOn;
 let u_spotLightPos;
+let u_lightColor;
 
 function setUpWebGL() {
   // Retrieve <canvas> element
@@ -246,6 +257,18 @@ function connectVariablesToGLSL(){
     return false;
   };
 
+  u_lightColor = gl.getUniformLocation(gl.program, 'u_lightColor');
+  if(!u_lightColor) {
+    console.log('failed to get u_lightColor location');
+    return false;
+  };
+
+  u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
+  if(!u_NormalMatrix) {
+    console.log('failed to get u_NormalMatrix location');
+    return false;
+  }
+
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
 
@@ -269,6 +292,7 @@ let g_x = 0;
 let g_yAngle = 0;
 let g_zAngle = 0;
 let g_animation = false;
+let g_normalOn = false;
 // let appleSwitch = false;
 let g_lightOn = true;
 let g_lightPos=[0,1,-2];
@@ -291,8 +315,8 @@ var greenColor = [0.0,1.0,0.0,1.0];
 
 function addActionsForHtmlUI(){
   // button 
-  document.getElementById('normalOn').onclick = function() {g_normalOn = true;};
-  document.getElementById('normalOff').onclick = function() {g_normalOn = false;};
+  document.getElementById('normalOn').onclick = function() {g_normalOn = true; renderAllShapes();};
+  document.getElementById('normalOff').onclick = function() {g_normalOn = false; renderAllShapes();};
   document.getElementById('lightOnButton').onclick = function() {g_lightOn = true;};
   document.getElementById('lightOffButton').onclick = function() {g_lightOn = false;};
 
@@ -661,15 +685,14 @@ function renderAllShapes(){
   var light = new Cube();
   light.color = [2,2,0,1];
   light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
-  light.matrix.scale(-.1,-.1,-.1);
-  light.matrix.translate(0,0,0);
+  light.matrix.scale(.1,.1,.1);
   light.render();
 
   let spotlight = new Cube();
   spotlight.color = g_spotlightColor;
   spotlight.matrix.translate(g_spotlightPos[0], g_spotlightPos[1], g_spotlightPos[2]);
   spotlight.matrix.scale(-.1, -.1, -.1);
-  spotlight.matrix.translate(2,20,20);
+  spotlight.matrix.translate(2, -0.5, 1);
   spotlight.render();
 
   drawMap();
@@ -679,6 +702,7 @@ function renderAllShapes(){
   var floor = new Cube();
   floor.color = [1.0,0.0,0.0,1.0];
   floor.textureNum=0;
+  if (g_normalOn) ground.textureNum = -2;
   floor.matrix.translate(7.75,-.75,8);
   floor.matrix.scale(32,0,32);
   floor.matrix.translate(-.475,0,-0.5);
@@ -687,13 +711,18 @@ function renderAllShapes(){
   // draw the sky 
   var sky = new Cube();
   sky.color = [1.0,0.0,0.0,1.0];
-  sky.textureNum = 1;
+  if (g_normalOn) {
+    sky.textureNum = -2;
+  } else {
+    sky.textureNum = 1;
+  }
   sky.matrix.scale(100,100,100);
   sky.matrix.translate(-.275,-.5,-0.25);
   sky.render();
 
   var ball = new Sphere();
   ball.color = [1.0,1.0,1.0,1.0];
+  if (g_normalOn) ball.textureNum = -2;
   ball.matrix.translate(0, 0.3, 0.0);
   ball.render();
 
@@ -711,6 +740,36 @@ function sendTextToHTML(text,htmlID){
   }
   htmlElm.innerHTML = text;
 }
+
+// function addListeners() {
+//   const angle = document.querySelector('#angle');
+//   const yellow = document.querySelector('#yellow');
+//   const blue = document.querySelector('#blue');
+//   const lightX = document.querySelector('#lightX');
+//   const lightY = document.querySelector('#lightY');
+//   const lightZ = document.querySelector('#lightZ');
+
+//   angle.addEventListener('mousemove', () => {
+//     g_globalAngle = -1 * angle.value;
+//     renderAllShapes();
+//   });
+//   // yellow2.addEventListener('mousemove', () => {g_yellowAngle2 = yellow2.value; renderAllShapes();})
+//   yellow.addEventListener('mousemove', () => { g_yellowAngle = yellow.value; renderAllShapes(); })
+//   blue.addEventListener('mousemove', () => { g_blueAngle = blue.value; renderAllShapes(); })
+
+//   document.querySelector('#animationOn').addEventListener('click', () => { animation = true});
+//   document.querySelector('#animationOff').addEventListener('click', () => animation = false);
+
+//   document.querySelector('#normalOn').addEventListener('click', () => { g_normalOn = true});
+//   document.querySelector('#normalOff').addEventListener('click', () => g_normalOn = false);
+
+//   lightX.addEventListener('mousemove', () => { g_lightPos[0] = lightX.value / 100; renderAllShapes(); });
+//   lightY.addEventListener('mousemove', () => { g_lightPos[1] = lightY.value / 100; renderAllShapes(); });
+//   lightZ.addEventListener('mousemove', () => { g_lightPos[2] = lightZ.value / 100; renderAllShapes(); });
+
+//   document.querySelector('#lightOn').addEventListener('click', () => { g_lightOn = true});
+//   document.querySelector('#lightOff').addEventListener('click', () => g_lightOn = false);
+// }
 
 drawOnigiri = function(){ 
   var rice = new Prism();
