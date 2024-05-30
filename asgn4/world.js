@@ -1,4 +1,4 @@
-// ColoredPoints.js
+// ColoredPoint.js (c) 2012 matsuda
 // Vertex shader program
 var VSHADER_SOURCE = `
   precision mediump float;
@@ -16,10 +16,10 @@ var VSHADER_SOURCE = `
   void main() {
     gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
     v_UV = a_UV;
-    v_Normal = normalize(vec3(u_NormalMatrix * vec4(a_Normal, 1.0)));
+    v_Normal = normalize(vec3(u_NormalMatrix * vec4(a_Normal,1)));
+    // v_Normal = a_Normal;
     v_VertPos = u_ModelMatrix * a_Position;
-  }`;
-
+  }`
 
 // Fragment shader program
 var FSHADER_SOURCE = `
@@ -43,69 +43,63 @@ var FSHADER_SOURCE = `
   uniform float lightOuterCutoff;
   uniform vec3 u_spotLightPos;
   uniform vec3 u_lightColor; 
+
   void main() {
-    if (u_whichTexture == -3) {
-      gl_FragColor = vec4(v_Normal + 1.0 / 2.0, 1.0);
-    } else if (u_whichTexture == -2) {
-      gl_FragColor = u_FragColor;
-    } else if (u_whichTexture == -1) {
-      gl_FragColor = vec4(v_UV, 1.0, 1.0);
-    } else if (u_whichTexture == 0) {
-      gl_FragColor = texture2D(u_Sampler0, v_UV);
-    } else if (u_whichTexture == 1) {
-      gl_FragColor = texture2D(u_Sampler1, v_UV);
-    } else if (u_whichTexture == 2) {
-      gl_FragColor = texture2D(u_Sampler2, v_UV);
-    } else if (u_whichTexture == 3) {
-      gl_FragColor = texture2D(u_Sampler3, v_UV);
+    if(u_whichTexture == -3){
+      gl_FragColor = vec4(v_Normal + 1.0/2.0, 1.0); // use normal debug
+    } else if(u_whichTexture == -2){
+      gl_FragColor = u_FragColor; // use color
+    } else if(u_whichTexture == -1) {
+      gl_FragColor = vec4(v_UV,1.0,1.0); // use uv debug color
+    } else if(u_whichTexture == 0) {
+      gl_FragColor = texture2D(u_Sampler0, v_UV); // use texture0
+    } else if(u_whichTexture == 1) {
+      gl_FragColor = texture2D(u_Sampler1, v_UV); // use texture1
+    } else if(u_whichTexture == 2) {
+      gl_FragColor = texture2D(u_Sampler2, v_UV); // use texture2
+    } else if(u_whichTexture == 3) {
+      gl_FragColor = texture2D(u_Sampler3, v_UV); // use texture3
+    } else if(u_whichTexture == 4) {
+      gl_FragColor = texture2D(u_Sampler4, v_UV); // use texture4
     } else {
-      gl_FragColor = vec4(1, 0.2, 0.2, 1);
+      gl_FragColor = vec4(1,.2,.2,1);
     }
 
-    vec3 lightVector = u_lightPos - vec3(v_VertPos);
+    vec3 lightVector = u_lightPos-vec3(v_VertPos);
     float r = length(lightVector);
 
     // N dot L 
     vec3 L = normalize(lightVector);
     vec3 N = normalize(v_Normal);
-    float nDotL = max(dot(N, L), 0.0);
+    float nDotL = max(dot(N,L), 0.0);
 
     // reflection 
-    vec3 R = reflect(-L, N);
+    vec3 R = reflect(-L,N);
 
     // eye 
-    vec3 E = normalize(u_cameraPos - vec3(v_VertPos));
+    vec3 E = normalize(u_cameraPos-vec3(v_VertPos));
 
     // specular 
-    float specular = pow(max(dot(E, R), 0.0), 64.0) * 0.8;
+    float specular = pow(max(dot(E,R), 0.0), 64.0) * 0.8;
 
-    vec3 diffuse = vec3(gl_FragColor) * nDotL * 0.7;
+    vec3 diffuse = vec3(gl_FragColor) * nDotL *0.7;
     vec3 ambient = vec3(gl_FragColor) * 0.3;
 
-    vec3 spotLightdirection = vec3(0, -1, 0);
+    vec3 spotLightdirection = vec3(0,-1,0);
     vec3 spotLight = normalize(u_spotLightPos - vec3(v_VertPos));
     vec3 lightToPointDirection = -spotLight;
     vec3 spotLightdiffuse = max(0.0, dot(spotLight, normalize(v_Normal))) * vec3(gl_FragColor) * vec3(1.0, 0.0, 1.0);
     float angleToSurface = dot(lightToPointDirection, spotLightdirection);
     float cos = smoothstep(0.0, 20.0, angleToSurface);
     diffuse += spotLightdiffuse;
-    if (u_lightOn) {
-      if (u_whichTexture == 0) {
-        gl_FragColor = vec4(diffuse + ambient, 1.0);
-      } else {
-        gl_FragColor = vec4(specular * u_lightColor + diffuse * u_lightColor + ambient, 1.0);
-      }
-    }
-
-    if (u_lightOn) {
-      if (u_whichTexture == 0) {
+    if(u_lightOn) {
+      if(u_whichTexture ==  0) {
         gl_FragColor = vec4(specular + diffuse + ambient, 1.0);
       } else {
         gl_FragColor = vec4(diffuse + ambient, 1.0);
       }
     }
-  }`;
-
+  }`
 
 // global variables
 let canvas;
@@ -113,23 +107,24 @@ let gl;
 let a_Position;
 let a_UV;
 let a_Normal;
-let u_whichTexture;
 let u_FragColor;
 let u_Size;
 let u_ModelMatrix;
+let u_NormalMatrix;
 let u_ProjectionMatrix;
 let u_ViewMatrix;
-let u_NormalMatrix;
-
 let u_GlobalRotateMatrix;
 let u_Sampler0;
 let u_Sampler1;
 let u_Sampler2;
 let u_Sampler3;
+let u_Sampler4;               
+let u_whichTexture;
 let camera;
 let u_cameraPos;
 let u_lightPos;
 let u_lightOn;
+// https://www.youtube.com/watch?v=7VN4QqOtvt0&list=PLPbmjY2NVO_X1U1JzLxLDdRn4NmtxyQQo&index=20
 let u_spotLightPos;
 let u_lightColor;
 
@@ -137,6 +132,8 @@ function setUpWebGL() {
   // Retrieve <canvas> element
   canvas = document.getElementById('webgl');
 
+  // Get the rendering context for WebGL
+  // gl = getWebGLContext(canvas);
   gl = canvas.getContext("webgl", { preserveDrawingBuffer: true});
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
@@ -160,11 +157,13 @@ function connectVariablesToGLSL(){
     console.log('Failed to get the storage location of a_Position');
     return;
   }
+
   a_Normal= gl.getAttribLocation(gl.program, 'a_Normal');
   if (a_Normal < 0) {
     console.log('Failed to get the storage location of a_Normal');
     return;
   }
+
   // Get the storage location of a_Position
   a_UV = gl.getAttribLocation(gl.program, 'a_UV');
   if (a_UV < 0) {
@@ -183,6 +182,12 @@ function connectVariablesToGLSL(){
   u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
   if(!u_ModelMatrix) {
     console.log("failed to get the storage loc of u_ModelMatrix");
+    return;
+  }
+
+  u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
+  if(!u_NormalMatrix) {
+    console.log("failed to get the storage loc of u_NormalMatrix");
     return;
   }
 
@@ -228,11 +233,18 @@ function connectVariablesToGLSL(){
     return false;
   }
 
+  u_Sampler4 = gl.getUniformLocation(gl.program, 'u_Sampler4');
+  if(!u_Sampler4) {
+    console.log('failed to get u_Sampler4 location');
+    return false;
+  }
+
   u_whichTexture = gl.getUniformLocation(gl.program, 'u_whichTexture');
   if(!u_whichTexture) {
     console.log('failed to get u_Texture location');
     return false;
   }
+
   u_lightPos = gl.getUniformLocation(gl.program, 'u_lightPos');
   if(!u_lightPos) {
     console.log('failed to get u_lightPos location');
@@ -257,17 +269,11 @@ function connectVariablesToGLSL(){
     return false;
   };
 
-  u_lightColor = gl.getUniformLocation(gl.program, 'u_lightColor');
+  u_lightColor= gl.getUniformLocation(gl.program, 'u_lightColor');
   if(!u_lightColor) {
     console.log('failed to get u_lightColor location');
     return false;
   };
-
-  u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
-  if(!u_NormalMatrix) {
-    console.log('failed to get u_NormalMatrix location');
-    return false;
-  }
 
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -277,6 +283,8 @@ function connectVariablesToGLSL(){
 
 // constants
 const POINT = 0;
+const TRIANGLE = 1;
+const CIRCLE = 2;
 
 // globals related to UI elements
 let g_selectedColor = [1.0,1.0,1.0,1.0];
@@ -291,9 +299,9 @@ let dragging = false;
 let g_x = 0;
 let g_yAngle = 0;
 let g_zAngle = 0;
-let g_animation = false;
+// let g_animation = false;
+let appleSwitch = false;
 let g_normalOn = false;
-// let appleSwitch = false;
 let g_lightOn = true;
 let g_lightPos=[0,1,-2];
 let g_spotlightPos = [0.1, 2, 0.2];
@@ -313,10 +321,12 @@ let g_rightEarAngle = 0;
 var redColor = [1.0,0.0,0.0,1.0];
 var greenColor = [0.0,1.0,0.0,1.0];
 
+// set up actions for HTML UI elements
 function addActionsForHtmlUI(){
   // button 
-  document.getElementById('normalOn').onclick = function() {g_normalOn = true; renderAllShapes();};
-  document.getElementById('normalOff').onclick = function() {g_normalOn = false; renderAllShapes();};
+  document.getElementById('normalOn').onclick = function() {g_normalOn = true;};
+  document.getElementById('normalOff').onclick = function() {g_normalOn = false;};
+
   document.getElementById('lightOnButton').onclick = function() {g_lightOn = true;};
   document.getElementById('lightOffButton').onclick = function() {g_lightOn = false;};
 
@@ -422,11 +432,30 @@ function sendImageToTEXTURE3(image) {
   console.log('finished loadTexture3');
 }
 
+function sendImageToTEXTURE4(image) {
+  var texture = gl.createTexture();
+  if(!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,1);
+  gl.activeTexture(gl.TEXTURE4);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE, image);
+  gl.uniform1i(u_Sampler4, 4);
+  console.log('finished loadTexture4');
+}
+
 
 function main() {
 
+  // set up canvas and gl variables
   setUpWebGL();
+  // set up glsl shaders programs and connect glsl variables
   connectVariablesToGLSL();
+
+  // set up actions for HTML UI elements
   addActionsForHtmlUI(); 
 
   camera = new Camera();
@@ -441,12 +470,19 @@ function main() {
     let [x,y] = convertCoordinatesEventToGL(e);
     g_lastX = x;
     g_lastY = y;
+
+    if(e.shiftKey) {
+      appleSwitch = !appleSwitch;
+    }
   }
   canvas.onmousemove = function(ev) {if(ev.buttons == 1) { click(ev) } };
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
+  // Clear <canvas>
+  // gl.clear(gl.COLOR_BUFFER_BIT);
+  //   renderAllShapes();
     requestAnimationFrame(tick);
 }
 
@@ -461,18 +497,6 @@ function tick() {
 }
 
 function updateAnimationAngles(){
-  if(g_animation == true){
-      g_headAngle = (5*Math.sin(g_seconds));
-      g_leftArmJoint1 = (5*Math.sin(g_seconds));
-      g_leftArmJoint2 = (5*Math.sin(g_seconds));
-      g_rightArmJoint1 = (5*Math.sin(g_seconds));
-      g_rightArmJoint2 = (5*Math.sin(g_seconds));
-      g_leftFootAngle = (5*Math.sin(g_seconds));
-      g_rightFootAngle = (5*Math.sin(g_seconds));
-      g_leftEarAngle = (2*Math.sin(g_seconds));
-      g_rightEarAngle = (2*Math.sin(g_seconds));
-  }
-
   g_lightPos[0] = 2.3 * Math.cos(g_seconds);
 }
 
@@ -493,24 +517,13 @@ function keydown(ev){
   }
   if (ev.keyCode==81){ // Q
     camera.rotateLeft();
-  }
-  if (ev.keyCode==69){ // E
+  } else if (ev.keyCode==69){ // E
     camera.rotateRight(); 
   }
-  // if (ev.keyCode == 82){
-  //   GlobalCamera.flyUp();
-  // }
-  // if (ev.keyCode == 70){
-  //   GlobalCamera.flyDown();
-  // }
   renderAllShapes();
+
 }
 
-// var g_eye = [0,0,3];
-// var g_at = [0,0,-100];
-// var g_up=[0,1,0];
-
-// right
 var g_map = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -597,12 +610,12 @@ function drawMap() {
         tunaNigiri.render();
       }
       if(g_map[x][y] == 4) {
-        var rice = new Prism();
+        var rice = new Cube();
         rice.color = [241/255, 244/255, 251/255, 1.0];
         rice.textureNum = 3;
         rice.matrix.translate(0, -.7, 0);
         rice.matrix.translate(x-8,0,y-8);
-        rice.matrix.scale(2, 2, 2);
+        rice.matrix.scale(2, 2, 0.5);
         rice.render();
       
         var seaweed = new Cube();
@@ -613,11 +626,10 @@ function drawMap() {
         seaweed.matrix.translate(.45, 0, -.1);
         seaweed.render();
       }
-      }
     }
+  }
 }
 
-// var g_shapesList = [];
 
 function click(ev) {
   
@@ -674,6 +686,34 @@ function renderAllShapes(){
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
+  drawMap();
+  drawOnigiri();
+
+  var floor = new Cube();
+  floor.color = [1.0,0.0,0.0,1.0];
+  floor.textureNum=0;
+  floor.matrix.translate(7.75,-.75,8);
+  floor.matrix.scale(32,0,32);
+  floor.matrix.translate(-.475,0,-0.5);
+  floor.renderFaster();
+
+  // draw the sky 
+  var sky = new Cube();
+  sky.color = [0.0,0.0,1.0,1.0];
+  if (g_normalOn) {
+    sky.textureNum = -3;
+  } else {
+    sky.textureNum = 1;
+  }
+  sky.matrix.scale(100,100,100);
+  sky.matrix.translate(-.275,-.5,-0.25);
+  sky.renderFaster();
+
+  var ball = new Sphere();
+  ball.color = [1.0,0.0,0.0,1.0];
+  ball.matrix.translate(0,.3,0.0);
+  ball.render();
+
   gl.uniform3f(u_lightPos, g_lightPos[0], g_lightPos[1], g_lightPos[2]);
 
   gl.uniform3f(u_cameraPos, camera.eye.elements[0], camera.eye.elements[1],  camera.eye.elements[2]);
@@ -685,47 +725,17 @@ function renderAllShapes(){
   var light = new Cube();
   light.color = [2,2,0,1];
   light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
-  light.matrix.scale(.1,.1,.1);
+  light.matrix.scale(-.1,-.1,-.1);
+  light.matrix.translate(0,0,0);
   light.render();
 
   let spotlight = new Cube();
   spotlight.color = g_spotlightColor;
   spotlight.matrix.translate(g_spotlightPos[0], g_spotlightPos[1], g_spotlightPos[2]);
   spotlight.matrix.scale(-.1, -.1, -.1);
-  spotlight.matrix.translate(2, -0.5, 1);
+  spotlight.matrix.translate(2,-0.5,1);
   spotlight.render();
-
-  drawMap();
-  drawOnigiri();
-  // draw floor 
-
-  var floor = new Cube();
-  floor.color = [1.0,0.0,0.0,1.0];
-  floor.textureNum=0;
-  if (g_normalOn) ground.textureNum = -2;
-  floor.matrix.translate(7.75,-.75,8);
-  floor.matrix.scale(32,0,32);
-  floor.matrix.translate(-.475,0,-0.5);
-  floor.render();
-
-  // draw the sky 
-  var sky = new Cube();
-  sky.color = [1.0,0.0,0.0,1.0];
-  if (g_normalOn) {
-    sky.textureNum = -2;
-  } else {
-    sky.textureNum = 1;
-  }
-  sky.matrix.scale(100,100,100);
-  sky.matrix.translate(-.275,-.5,-0.25);
-  sky.render();
-
-  var ball = new Sphere();
-  ball.color = [1.0,1.0,1.0,1.0];
-  if (g_normalOn) ball.textureNum = -2;
-  ball.matrix.translate(0, 0.3, 0.0);
-  ball.render();
-
+  // check the time at the end of the function and show on webpage
   var duration = performance.now() - startTime;
   sendTextToHTML("ms: " + Math.floor(duration) + " fps: "  + Math.floor(10000/duration)/10, "numdot");
   
@@ -741,42 +751,12 @@ function sendTextToHTML(text,htmlID){
   htmlElm.innerHTML = text;
 }
 
-// function addListeners() {
-//   const angle = document.querySelector('#angle');
-//   const yellow = document.querySelector('#yellow');
-//   const blue = document.querySelector('#blue');
-//   const lightX = document.querySelector('#lightX');
-//   const lightY = document.querySelector('#lightY');
-//   const lightZ = document.querySelector('#lightZ');
-
-//   angle.addEventListener('mousemove', () => {
-//     g_globalAngle = -1 * angle.value;
-//     renderAllShapes();
-//   });
-//   // yellow2.addEventListener('mousemove', () => {g_yellowAngle2 = yellow2.value; renderAllShapes();})
-//   yellow.addEventListener('mousemove', () => { g_yellowAngle = yellow.value; renderAllShapes(); })
-//   blue.addEventListener('mousemove', () => { g_blueAngle = blue.value; renderAllShapes(); })
-
-//   document.querySelector('#animationOn').addEventListener('click', () => { animation = true});
-//   document.querySelector('#animationOff').addEventListener('click', () => animation = false);
-
-//   document.querySelector('#normalOn').addEventListener('click', () => { g_normalOn = true});
-//   document.querySelector('#normalOff').addEventListener('click', () => g_normalOn = false);
-
-//   lightX.addEventListener('mousemove', () => { g_lightPos[0] = lightX.value / 100; renderAllShapes(); });
-//   lightY.addEventListener('mousemove', () => { g_lightPos[1] = lightY.value / 100; renderAllShapes(); });
-//   lightZ.addEventListener('mousemove', () => { g_lightPos[2] = lightZ.value / 100; renderAllShapes(); });
-
-//   document.querySelector('#lightOn').addEventListener('click', () => { g_lightOn = true});
-//   document.querySelector('#lightOff').addEventListener('click', () => g_lightOn = false);
-// }
-
 drawOnigiri = function(){ 
-  var rice = new Prism();
+  var rice = new Cube();
   rice.color = [241/255, 244/255, 251/255, 1.0];
   rice.textureNum = 3;
-  rice.matrix.translate(-1, -.7, 2);
-  rice.matrix.scale(2, 2, 2);
+  rice.matrix.translate(0, -.7, 2);
+  rice.matrix.scale(2, 2, 0.5);
   rice.render();
 
   var seaweed = new Cube();
@@ -787,5 +767,4 @@ drawOnigiri = function(){
   seaweed.matrix.translate(.45, 0, -.1);
   seaweed.render();
 }
-
 console.log('done');
