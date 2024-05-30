@@ -669,7 +669,7 @@ function renderAllShapes(){
   spotlight.color = g_spotlightColor;
   spotlight.matrix.translate(g_spotlightPos[0], g_spotlightPos[1], g_spotlightPos[2]);
   spotlight.matrix.scale(-.1, -.1, -.1);
-  spotlight.matrix.translate(2,-0.5,1);
+  spotlight.matrix.translate(2,20,20);
   spotlight.render();
 
   drawMap();
@@ -694,8 +694,7 @@ function renderAllShapes(){
 
   var ball = new Sphere();
   ball.color = [1.0,1.0,1.0,1.0];
-  ball.textureNum = 3;
-  ball.matrix.translate(0,0,0.0);
+  ball.matrix.translate(0, 0.3, 0.0);
   ball.render();
 
   var duration = performance.now() - startTime;
