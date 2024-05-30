@@ -579,6 +579,8 @@ function drawMap() {
         riceNigiri = new Cube();
         riceNigiri.color = [1.0,1.0,1.0,1.0];
         riceNigiri.textureNum = 3;
+        if (g_normalOn) riceNigiri.textureNum = -3;
+
         riceNigiri.matrix.translate(0,-0.75,0);
         riceNigiri.matrix.translate(x-8,0,y-8);
         // riceNigiri.matrix.rotate(2*rand,0,1,0);
@@ -597,6 +599,8 @@ function drawMap() {
         riceNigiri = new Cube();
         riceNigiri.color = [1.0,1.0,1.0,1.0];
         riceNigiri.textureNum = 3;
+        if (g_normalOn) riceNigiri.textureNum = -3;
+
         riceNigiri.matrix.translate(0,-0.75,0);
         riceNigiri.matrix.translate(x-8,0,y-8);
         riceNigiri.matrix.scale(1.6, .7, 1);
@@ -613,6 +617,8 @@ function drawMap() {
         var rice = new Cube();
         rice.color = [241/255, 244/255, 251/255, 1.0];
         rice.textureNum = 3;
+        if (g_normalOn) rice.textureNum = -3;
+
         rice.matrix.translate(0, -.7, 0);
         rice.matrix.translate(x-8,0,y-8);
         rice.matrix.scale(2, 2, 0.5);
@@ -692,6 +698,7 @@ function renderAllShapes(){
   var floor = new Cube();
   floor.color = [1.0,0.0,0.0,1.0];
   floor.textureNum=0;
+  if (g_normalOn) floor.textureNum = -3;
   floor.matrix.translate(7.75,-.75,8);
   floor.matrix.scale(32,0,32);
   floor.matrix.translate(-.475,0,-0.5);
@@ -711,6 +718,7 @@ function renderAllShapes(){
 
   var ball = new Sphere();
   ball.color = [1.0,0.0,0.0,1.0];
+  if (g_normalOn) ball.textureNum = -3;
   ball.matrix.translate(0,.3,0.0);
   ball.render();
 
@@ -755,6 +763,8 @@ drawOnigiri = function(){
   var rice = new Cube();
   rice.color = [241/255, 244/255, 251/255, 1.0];
   rice.textureNum = 3;
+  if (g_normalOn) rice.textureNum = -3;
+
   rice.matrix.translate(0, -.7, 2);
   rice.matrix.scale(2, 2, 0.5);
   rice.render();
