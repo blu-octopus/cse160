@@ -1,0 +1,11 @@
+Model Information:
+* title:	Samurai capybara
+* source:	https://sketchfab.com/3d-models/samurai-capybara-6adf1904b9e744ff9381583336377080
+* author:	memoov (https://sketchfab.com/movartD)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Samurai capybara" (https://sketchfab.com/3d-models/samurai-capybara-6adf1904b9e744ff9381583336377080) by memoov (https://sketchfab.com/movartD) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
