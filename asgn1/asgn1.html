@@ -31,30 +31,31 @@
         <div class="item">
             <!-- button type -->
             <div>
-                Drawing Mode:
+                Brush Shape:
                 <br><br>
-                <button type = "button" id="pointButton" class="button-23">�? Point</button>
-                <button type = "button" id="triButton" class="button-23">??? Triangle</button>
-                <button type = "button" id="circleButton" class="button-23">??? Circle</button>
-                <button type = "button" id="duckyButton" class="button-23">???? Duck</button>
+                <button type = "button" id="pointButton" class="button-23">■ Square</button>
+                <button type = "button" id="triButton" class="button-23">▲ Triangle</button>
+                <button type = "button" id="circleButton" class="button-23">● Circle</button>
+                <button type = "button" id="duckyButton" class="button-23">🐥 Duck</button>
+                <br>
+                <p>Segment Count (<span id="segmentValue">10</span>) for Circle Brush: 
+                    <input type="range" min="3" max="20" value="10" class="slider" id="segmentSlide" />
+                </p>
             </div>
 
             <!-- slider -->
             <div>
                 <br>
-                Shape Color:
+                Color (RGB):
                 <p>
-                    <p>??��??Red..<input type="range" min="0" max="100" value="100" class="slider" id="redSlide" /></p> 
-                    <p>????Green <input type="range" min="0" max="100" value="100" class="slider" id="greenSlide" /></p> 
-                    <p>????Blue  <input type="range"min="0" max="100" value="100" class="slider" id="blueSlide" /></p> 
+                    <p>🟥 Red ...<input type="range" min="0" max="100" value="100" class="slider" id="redSlide" /></p> 
+                    <p>🟩 Green <input type="range" min="0" max="100" value="100" class="slider" id="greenSlide" /></p> 
+                    <p>🟦 Blue .. <input type="range"min="0" max="100" value="100" class="slider" id="blueSlide" /></p> 
                 </p>
                 <!-- size -->
                 <br>
-                Shape Size: 
+                Brush Size: 
                 <input type="range" min="1" max="100" value="10" class="slider" id="sizeSlide" />
-                <br>(Circle) Segment Count: 
-                <span id="segmentValue">10</span>
-                <input type="range" min="3" max="20" value="10" class="slider" id="segmentSlide" />
             </div>
 
             <!-- clear button -->
